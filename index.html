@@ -12,7 +12,7 @@
       name="description"
       content="Web thuyết trình tương tác về quan hệ lợi ích kinh tế trong chuỗi cà phê Việt Nam."
     />
-    <link rel="stylesheet" href="styles.css?v=review-fixes-20260714-1" />
+    <link rel="stylesheet" href="styles.css?v=scene-expansion-20260714-1" />
   </head>
   <body>
     <canvas id="beanCanvas" aria-hidden="true"></canvas>
@@ -107,6 +107,19 @@
             <span class="trader"></span>
             <span class="buy-arrow"></span>
             <span class="price-tag">Thương lái thu mua<br />40.000đ/kg</span>
+            <span class="farmer-mood" id="farmerMood">🙂</span>
+          </div>
+          <div class="timeline-control">
+            <label>
+              <span class="range-head"><span>Dòng thời gian</span><strong id="monthValue">Tháng 1</strong></span>
+              <input id="monthSlider" type="range" min="1" max="12" value="1" step="1" />
+            </label>
+            <div class="sunk-cost">
+              <small>Chi phí đã bỏ ra</small>
+              <strong id="sunkCostOut">0đ</strong>
+              <span><i id="sunkCostFill"></i></span>
+            </div>
+            <button class="risk-button" id="riskButton" type="button">Gặp rủi ro</button>
           </div>
           <ol>
             <li class="active-stage" data-plant-stage="1" tabindex="0"><span>Đầu vụ</span><p>Giống, phân bón, nước tưới, công chăm sóc.</p></li>
@@ -278,6 +291,13 @@
             <h3>Doanh nghiệp</h3>
             <p>Vốn, công nghệ, thông tin, thương hiệu, hệ thống phân phối, hợp đồng.</p>
           </div>
+          <div class="bargain-control">
+            <label>
+              <span class="range-head"><span>Quyền mặc cả của nông dân</span><strong id="bargainPowerOut">18%</strong></span>
+              <input id="bargainSlider" type="range" min="0" max="100" value="18" step="1" />
+            </label>
+            <p id="balanceResult">Đóng góp lớn nhưng phần hưởng lợi còn thấp: nông dân nhận khoảng 12% giá trị phân chia.</p>
+          </div>
         </div>
       </section>
 
@@ -332,12 +352,17 @@
             Chỉ dựa vào nguyên tắc thị trường là chưa đủ, vì quan hệ lợi ích kinh tế luôn
             có cả mặt thống nhất và mâu thuẫn.
           </p>
-          <div class="tool-list">
-            <span>Pháp luật</span>
-            <span>Chính sách kinh tế</span>
-            <span>Công cụ hành chính</span>
-            <span>Thông tin</span>
-            <span>Hòa giải tranh chấp</span>
+          <div class="tool-list policy-tools">
+            <button type="button" data-policy="law">Pháp luật</button>
+            <button type="button" data-policy="economic">Chính sách kinh tế</button>
+            <button type="button" data-policy="admin">Công cụ hành chính</button>
+            <button type="button" data-policy="info">Thông tin</button>
+            <button type="button" data-policy="mediate">Hòa giải tranh chấp</button>
+          </div>
+          <div class="policy-effect">
+            <small id="policyTitle">Chọn một công cụ</small>
+            <p id="policyText">Bấm từng công cụ để xem nó làm quan hệ lợi ích bớt lệch như thế nào.</p>
+            <div><span id="policyBefore"></span><span id="policyAfter"></span></div>
           </div>
         </div>
       </section>
@@ -348,22 +373,22 @@
           <h2>Bốn vai trò của Nhà nước trong hài hòa lợi ích</h2>
         </div>
         <div class="doors reveal">
-          <article>
+          <article data-flip-example="Ví dụ: chuẩn hóa hợp đồng thu mua, cân đo công khai, truy xuất nguồn gốc giúp giảm tình trạng ép giá.">
             <span>01</span>
             <h3>Bảo vệ lợi ích hợp pháp</h3>
             <p>Công khai giá cả, kiểm soát cân đo, bảo vệ hợp đồng, chỉ dẫn địa lý.</p>
           </article>
-          <article>
+          <article data-flip-example="Ví dụ: giá sàn, thưởng chất lượng và liên kết tiêu thụ giúp phần lợi ích quay lại người trồng rõ hơn.">
             <span>02</span>
             <h3>Điều hòa lợi ích</h3>
             <p>Giá sàn, thưởng chất lượng, chia sẻ khi giá tăng, liên kết hợp tác xã.</p>
           </article>
-          <article>
+          <article data-flip-example="Ví dụ: kiểm tra gian lận chất lượng, chống phá hợp đồng và công khai thông tin giá để hạn chế bên mạnh lạm dụng.">
             <span>03</span>
             <h3>Kiểm soát tiêu cực</h3>
             <p>Ngăn ép giá, gian lận chất lượng, phá vỡ hợp đồng, thiếu minh bạch.</p>
           </article>
-          <article>
+          <article data-flip-example="Ví dụ: cơ chế hòa giải/trọng tài giúp tranh chấp không biến thành thiệt hại kéo dài cho hộ sản xuất nhỏ.">
             <span>04</span>
             <h3>Giải quyết mâu thuẫn</h3>
             <p>Mẫu hợp đồng rõ ràng, hòa giải, trọng tài, chế tài khi vi phạm.</p>
@@ -437,6 +462,12 @@
           </div>
           <h2 class="closing">Đằng sau vị đắng của cà phê không nên là vị đắng của người trồng.</h2>
           <p class="lead">Một ly cà phê chỉ thực sự bền vững khi người trồng, doanh nghiệp và xã hội cùng được hưởng lợi.</p>
+          <div class="commitment-box">
+            <label><input type="checkbox" data-commit /> Mua cà phê minh bạch nguồn gốc</label>
+            <label><input type="checkbox" data-commit /> Ủng hộ hợp tác xã và liên kết công bằng</label>
+            <label><input type="checkbox" data-commit /> Chia sẻ câu chuyện phía sau một ly cà phê</label>
+            <strong id="commitmentResult">Chọn 3 cam kết để hoàn tất vòng lợi ích.</strong>
+          </div>
         </div>
       </section>
     </main>
@@ -446,6 +477,6 @@
       <span>Nội dung học tập môn Kinh tế chính trị Mác - Lênin. Giá cả và phép tính chỉ dùng cho mô phỏng tình huống học tập.</span>
     </footer>
 
-    <script src="script.js?v=review-fixes-20260714-1"></script>
+    <script src="script.js?v=scene-expansion-20260714-1"></script>
   </body>
 </html>

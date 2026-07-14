@@ -58,10 +58,19 @@ updateProgress();
 
 const coffeePlant = document.querySelector("#coffeePlant");
 const plantStages = [...document.querySelectorAll("[data-plant-stage]")];
+const monthSlider = document.querySelector("#monthSlider");
+const monthValue = document.querySelector("#monthValue");
+const sunkCostOut = document.querySelector("#sunkCostOut");
+const sunkCostFill = document.querySelector("#sunkCostFill");
+const riskButton = document.querySelector("#riskButton");
+const timelineBox = document.querySelector(".timeline");
+const farmerMood = document.querySelector("#farmerMood");
+let riskActive = false;
 
 function setPlantStage(stage) {
   if (!coffeePlant) return;
   coffeePlant.className = `plant stage-${stage}`;
+  if (riskActive) coffeePlant.classList.add("risk-hit");
   plantStages.forEach((item) => {
     const isActive = item.dataset.plantStage === String(stage);
     item.classList.toggle("active-stage", isActive);
@@ -69,17 +78,59 @@ function setPlantStage(stage) {
   });
 }
 
+function stageFromMonth(month) {
+  if (month <= 3) return 1;
+  if (month <= 6) return 2;
+  if (month <= 10) return 3;
+  return 4;
+}
+
+function formatVndShort(value) {
+  if (value >= 1_000_000) return `${(value / 1_000_000).toLocaleString("vi-VN", { maximumFractionDigits: 1 })} triệu`;
+  return `${Math.round(value).toLocaleString("vi-VN")}đ`;
+}
+
+function updateTimeline() {
+  if (!monthSlider) return;
+  const month = Number(monthSlider.value);
+  const stage = stageFromMonth(month);
+  const baseCost = (38_000_000 * month) / 12;
+  const riskCost = riskActive ? 4_500_000 : 0;
+  const cost = Math.min(45_000_000, baseCost + riskCost);
+  monthValue.textContent = `Tháng ${month}`;
+  sunkCostOut.textContent = formatVndShort(cost);
+  sunkCostFill.style.width = `${Math.min(100, (cost / 45_000_000) * 100)}%`;
+  if (farmerMood) farmerMood.textContent = riskActive ? "😟" : month >= 11 ? "😐" : "🙂";
+  timelineBox.classList.toggle("risk-active", riskActive);
+  setPlantStage(stage);
+}
+
 plantStages.forEach((item) => {
   item.setAttribute("role", "button");
   item.setAttribute("aria-pressed", item.classList.contains("active-stage") ? "true" : "false");
-  item.addEventListener("click", () => setPlantStage(item.dataset.plantStage));
+  item.addEventListener("click", () => {
+    const stage = Number(item.dataset.plantStage);
+    const monthByStage = { 1: 1, 2: 4, 3: 8, 4: 12 };
+    if (monthSlider) monthSlider.value = monthByStage[stage];
+    updateTimeline();
+  });
   item.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
-      setPlantStage(item.dataset.plantStage);
+      item.click();
     }
   });
 });
+
+if (monthSlider) {
+  monthSlider.addEventListener("input", updateTimeline);
+  riskButton.addEventListener("click", () => {
+    riskActive = !riskActive;
+    riskButton.textContent = riskActive ? "Rủi ro đã xảy ra" : "Gặp rủi ro";
+    updateTimeline();
+  });
+  updateTimeline();
+}
 
 const cupPrice = document.querySelector("#cupPrice");
 const grams = document.querySelector("#grams");
@@ -248,6 +299,85 @@ function updateContractBuilder() {
 
 contractChecks.forEach((input) => input.addEventListener("change", updateContractBuilder));
 updateContractBuilder();
+
+const scale = document.querySelector(".scale");
+const bargainSlider = document.querySelector("#bargainSlider");
+const bargainPowerOut = document.querySelector("#bargainPowerOut");
+const balanceResult = document.querySelector("#balanceResult");
+
+function updateBalance() {
+  if (!bargainSlider || !scale) return;
+  const power = Number(bargainSlider.value);
+  const farmerReceive = Math.round(8 + power * 0.42);
+  const angle = 12 - power * 0.24;
+  scale.style.setProperty("--balance-angle", `${angle}deg`);
+  bargainPowerOut.textContent = `${power}%`;
+  balanceResult.textContent = `Khi quyền mặc cả đạt ${power}%, phần hưởng lợi mô phỏng của nông dân tăng lên khoảng ${farmerReceive}%.`;
+}
+
+if (bargainSlider) {
+  bargainSlider.addEventListener("input", updateBalance);
+  updateBalance();
+}
+
+const policyButtons = [...document.querySelectorAll("[data-policy]")];
+const policyTitle = document.querySelector("#policyTitle");
+const policyText = document.querySelector("#policyText");
+const policyBefore = document.querySelector("#policyBefore");
+const policyAfter = document.querySelector("#policyAfter");
+const policyData = {
+  law: ["Pháp luật", "Bảo vệ hợp đồng, cân đo và chỉ dẫn nguồn gốc làm giảm rủi ro bị ép điều kiện giao dịch.", 34, 54],
+  economic: ["Chính sách kinh tế", "Giá sàn, tín dụng và hỗ trợ liên kết giúp nông dân có thêm thời gian và vị thế khi bán.", 32, 58],
+  admin: ["Công cụ hành chính", "Kiểm tra gian lận, xử phạt phá hợp đồng và quản lý chất lượng giúp thị trường bớt méo mó.", 30, 48],
+  info: ["Thông tin", "Công khai giá và tiêu chuẩn chất lượng làm giảm bất cân xứng thông tin giữa hộ nhỏ và bên mua.", 28, 52],
+  mediate: ["Hòa giải tranh chấp", "Cơ chế hòa giải/trọng tài làm chi phí tranh chấp thấp hơn và trách nhiệm rõ hơn.", 31, 50],
+};
+
+function setPolicy(key) {
+  const item = policyData[key];
+  if (!item || !policyTitle) return;
+  policyButtons.forEach((button) => button.classList.toggle("active", button.dataset.policy === key));
+  policyTitle.textContent = item[0];
+  policyText.textContent = item[1];
+  policyBefore.style.width = `${item[2]}%`;
+  policyAfter.style.width = `${item[3]}%`;
+}
+
+policyButtons.forEach((button) => button.addEventListener("click", () => setPolicy(button.dataset.policy)));
+if (policyButtons[0]) setPolicy(policyButtons[0].dataset.policy);
+
+document.querySelectorAll(".doors article[data-flip-example]").forEach((card) => {
+  const original = card.querySelector("p").textContent;
+  const example = card.dataset.flipExample;
+  card.tabIndex = 0;
+  card.setAttribute("role", "button");
+  card.addEventListener("click", () => {
+    const flipped = !card.classList.contains("flipped");
+    card.classList.toggle("flipped", flipped);
+    card.querySelector("p").textContent = flipped ? example : original;
+  });
+  card.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      card.click();
+    }
+  });
+});
+
+const commitmentChecks = [...document.querySelectorAll("[data-commit]")];
+const commitmentResult = document.querySelector("#commitmentResult");
+
+function updateCommitment() {
+  if (!commitmentResult) return;
+  const count = commitmentChecks.filter((input) => input.checked).length;
+  commitmentResult.textContent =
+    count === commitmentChecks.length
+      ? "Bạn đã khép vòng lợi ích: tiêu dùng có trách nhiệm cũng là một phần của chuỗi công bằng."
+      : `Đã chọn ${count}/3 cam kết.`;
+}
+
+commitmentChecks.forEach((input) => input.addEventListener("change", updateCommitment));
+updateCommitment();
 
 const chainItems = [...document.querySelectorAll(".chain > article")];
 const chainRoute = document.querySelector(".chain-lab");
