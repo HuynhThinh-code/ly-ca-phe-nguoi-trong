@@ -60,6 +60,193 @@ function updateCalculator() {
 [cupPrice, grams].forEach((input) => input.addEventListener("input", updateCalculator));
 updateCalculator();
 
+const missions = {
+  actor: false,
+  shock: false,
+  policy: false,
+  contract: false,
+  quiz: false,
+};
+
+function updateMissionScore() {
+  const done = Object.values(missions).filter(Boolean).length;
+  document.querySelectorAll("[data-mission]").forEach((item) => {
+    item.classList.toggle("done", missions[item.dataset.mission]);
+  });
+  const missionScore = document.querySelector("#missionScore");
+  const finalScore = document.querySelector("#finalScore");
+  const finalMessage = document.querySelector("#finalMessage");
+  if (missionScore) missionScore.textContent = `${done}/5`;
+  if (finalScore) finalScore.textContent = `${done}/5 missions`;
+  if (finalMessage) {
+    finalMessage.textContent =
+      done === 5
+        ? "Case complete: you connected interests, risk, policy, and contract design."
+        : "Complete every interaction to turn the presentation into a living case study.";
+  }
+}
+
+function completeMission(name) {
+  missions[name] = true;
+  updateMissionScore();
+}
+
+const actorStories = {
+  farmer: {
+    title: "Farmer",
+    body: "Creates the raw material and carries weather, input-cost, and harvest-timing risk. The weak point is bargaining power at the moment of sale.",
+  },
+  collector: {
+    title: "Collector",
+    body: "Controls aggregation, sorting, storage, and access to market information. This position can reduce costs or create price pressure.",
+  },
+  roaster: {
+    title: "Roaster",
+    body: "Adds technology, quality control, flavor profile, packaging, and distribution relationships. Value rises because the bean becomes a product.",
+  },
+  retailer: {
+    title: "Retailer",
+    body: "Sells service, location, brand atmosphere, and convenience. The cup price includes much more than the cost of beans.",
+  },
+  consumer: {
+    title: "Consumer",
+    body: "Pays for the final experience. Consumer demand can reward fair sourcing if transparency is visible and credible.",
+  },
+};
+
+const actorReadout = document.querySelector("#actorReadout");
+const actorTokens = [...document.querySelectorAll(".actor-token")];
+
+function renderActor(actor = "farmer") {
+  if (!actorReadout) return;
+  const story = actorStories[actor];
+  actorTokens.forEach((button) => button.classList.toggle("active", button.dataset.actor === actor));
+  actorReadout.innerHTML = `<h4>${story.title}</h4><p>${story.body}</p>`;
+  completeMission("actor");
+}
+
+actorTokens.forEach((button) => {
+  button.addEventListener("click", () => renderActor(button.dataset.actor));
+});
+renderActor("farmer");
+
+const shockRange = document.querySelector("#shockRange");
+const shockLabel = document.querySelector("#shockLabel");
+const farmerShock = document.querySelector("#farmerShock");
+const brandShock = document.querySelector("#brandShock");
+const farmerMeter = document.querySelector("#farmerMeter");
+const brandMeter = document.querySelector("#brandMeter");
+
+function updateShock() {
+  if (!shockRange) return;
+  const shock = Number(shockRange.value);
+  const farmPrice = Math.max(18000, Math.round(40000 * (1 + shock / 100)));
+  const farmerHealth = Math.max(12, Math.min(94, 72 + shock * 1.35));
+  const brandHealth = Math.max(44, Math.min(92, 78 + shock * 0.28));
+  shockLabel.textContent = `${shock > 0 ? "+" : ""}${shock}%`;
+  farmerShock.textContent = `${farmPrice.toLocaleString("vi-VN")}d/kg`;
+  brandShock.textContent = shock < -25 ? "protected but margin tightens" : "stable because of contracts";
+  farmerMeter.value = farmerHealth;
+  brandMeter.value = brandHealth;
+  completeMission("shock");
+}
+
+if (shockRange) {
+  shockRange.addEventListener("input", updateShock);
+  updateShock();
+}
+
+const quizChoices = [...document.querySelectorAll(".quiz-choice")];
+const quizFeedback = document.querySelector("#quizFeedback");
+quizChoices.forEach((button) => {
+  button.addEventListener("click", () => {
+    const correct = button.dataset.correct === "true";
+    quizChoices.forEach((choice) => choice.classList.remove("correct", "wrong"));
+    button.classList.add(correct ? "correct" : "wrong");
+    if (quizFeedback) {
+      quizFeedback.textContent = correct
+        ? "Correct. A fair contract changes risk distribution, not just the final cup price."
+        : "Not quite. That does not directly protect farmers at the farmgate.";
+    }
+    if (correct) completeMission("quiz");
+  });
+});
+
+const policyButtons = [...document.querySelectorAll("[data-policy]")];
+const policyResult = document.querySelector("#policyResult");
+const fairnessScore = document.querySelector("#fairnessScore");
+const fairnessMeter = document.querySelector("#fairnessMeter");
+const selectedPolicies = new Set();
+const policyText = {
+  price: "Price transparency reduces information asymmetry and makes bargaining less blind.",
+  coop: "Cooperative support increases collective scale and negotiation power.",
+  quality: "Quality premiums connect better production to higher income.",
+  storage: "Storage credit reduces forced selling during harvest pressure.",
+  fine: "Penalties for scale fraud protect legal interests and market trust.",
+};
+
+function updatePolicyLab() {
+  const score = Math.min(100, 42 + selectedPolicies.size * 14);
+  if (fairnessScore) fairnessScore.textContent = score;
+  if (fairnessMeter) fairnessMeter.value = score;
+  if (policyResult) {
+    policyResult.textContent =
+      selectedPolicies.size === 0
+        ? "Choose policies to see effects on farmers, firms, and consumers."
+        : [...selectedPolicies].map((key) => policyText[key]).join(" ");
+  }
+  if (selectedPolicies.size >= 3) completeMission("policy");
+}
+
+policyButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const key = button.dataset.policy;
+    if (selectedPolicies.has(key)) selectedPolicies.delete(key);
+    else selectedPolicies.add(key);
+    button.classList.toggle("active", selectedPolicies.has(key));
+    updatePolicyLab();
+  });
+});
+
+const clauseButtons = [...document.querySelectorAll("[data-clause]")];
+const contractBadge = document.querySelector("#contractBadge");
+const contractDraft = document.querySelector("#contractDraft");
+const selectedClauses = new Set();
+const clauseNames = {
+  floor: "floor price",
+  formula: "transparent price formula",
+  bonus: "quality premium",
+  sharing: "upside sharing",
+  training: "technical support",
+  mediation: "dispute mediation",
+};
+
+function updateContract() {
+  const count = selectedClauses.size;
+  if (contractBadge) contractBadge.textContent = `${count}/6 clauses`;
+  if (contractDraft) {
+    contractDraft.textContent =
+      count === 0
+        ? "No protection clause yet. Select at least 4 clauses to reach a fair contract."
+        : `Draft contract includes ${[...selectedClauses].map((key) => clauseNames[key]).join(", ")}. ${
+            count >= 4 ? "Fairness threshold reached." : "Add more clauses to protect the weaker side."
+          }`;
+  }
+  if (count >= 4) completeMission("contract");
+}
+
+clauseButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const key = button.dataset.clause;
+    if (selectedClauses.has(key)) selectedClauses.delete(key);
+    else selectedClauses.add(key);
+    button.classList.toggle("active", selectedClauses.has(key));
+    updateContract();
+  });
+});
+
+updateMissionScore();
+
 const beanCanvas = document.querySelector("#beanCanvas");
 const beanCtx = beanCanvas.getContext("2d");
 const stormCanvas = document.querySelector("#stormCanvas");

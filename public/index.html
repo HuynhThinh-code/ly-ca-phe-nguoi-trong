@@ -51,6 +51,19 @@
         <div class="hero-copy reveal">
           <p class="eyebrow">Kịch bản web tương tác</p>
           <h1>Fair Bean Chain</h1>
+          <div class="mission-console" aria-label="Interactive mission dashboard">
+            <div>
+              <small>Interactive mission</small>
+              <strong id="missionScore">0/5</strong>
+            </div>
+            <ol>
+              <li data-mission="actor">Identify hidden interests</li>
+              <li data-mission="shock">Survive a price shock</li>
+              <li data-mission="policy">Choose state policies</li>
+              <li data-mission="contract">Build a fair contract</li>
+              <li data-mission="quiz">Answer the final check</li>
+            </ol>
+          </div>
           <p class="lead">
             Một ly cà phê không chỉ chứa cà phê. Nó chứa lao động, vốn, công nghệ,
             thương hiệu, rủi ro và quyền thương lượng của nhiều chủ thể.
@@ -146,6 +159,21 @@
         </div>
       </section>
 
+        <div class="interactive-lab reveal" aria-label="Value-chain simulator">
+          <div class="lab-copy">
+            <p class="eyebrow">Value-chain simulator</p>
+            <h3>Tap each actor to reveal their hidden economic interest</h3>
+            <p>Each choice opens one layer of power in the chain: who carries risk, who controls information, and who captures brand value.</p>
+          </div>
+          <div class="actor-board">
+            <button class="actor-token active" data-actor="farmer">Farmer</button>
+            <button class="actor-token" data-actor="collector">Collector</button>
+            <button class="actor-token" data-actor="roaster">Roaster</button>
+            <button class="actor-token" data-actor="retailer">Retailer</button>
+            <button class="actor-token" data-actor="consumer">Consumer</button>
+          </div>
+          <article id="actorReadout" class="readout-card" aria-live="polite"></article>
+        </div>
       <section id="scene-4" class="scene split" data-scene="4">
         <div class="cup-anatomy reveal" aria-label="Giải phẫu một ly cà phê">
           <div class="layer l-service">Dịch vụ</div>
@@ -229,6 +257,32 @@
         </div>
       </section>
 
+      <section class="scene compact-lab shock-section" data-scene="6">
+        <div class="shock-lab reveal" aria-label="Price shock simulator">
+          <div class="shock-head">
+            <div>
+              <p class="eyebrow">Shock round</p>
+              <h2>Move the world price and watch risk move through the chain</h2>
+            </div>
+            <strong id="shockLabel">-20%</strong>
+          </div>
+          <input id="shockRange" type="range" min="-45" max="25" value="-20" step="5" />
+          <div class="shock-bars">
+            <label>Farmer income <span id="farmerShock">32.000d/kg</span></label>
+            <meter id="farmerMeter" min="0" max="100" value="42"></meter>
+            <label>Downstream margin <span id="brandShock">stable because of contracts</span></label>
+            <meter id="brandMeter" min="0" max="100" value="72"></meter>
+          </div>
+          <div class="quiz-card">
+            <p>Quick check: which tool reduces disadvantage for farmers when prices fall?</p>
+            <button class="quiz-choice" data-correct="false">Make urban coffee cups more expensive</button>
+            <button class="quiz-choice" data-correct="true">Floor-price contracts and quality premiums</button>
+            <button class="quiz-choice" data-correct="false">Let collectors decide every term</button>
+            <strong id="quizFeedback" aria-live="polite"></strong>
+          </div>
+        </div>
+      </section>
+
       <section id="scene-7" class="scene split policy" data-scene="7">
         <div class="state-hand reveal" aria-hidden="true">
           <span>Nhà nước</span>
@@ -279,6 +333,25 @@
         </div>
       </section>
 
+        <div class="policy-lab reveal" aria-label="Policy decision room">
+          <div>
+            <p class="eyebrow">Policy room</p>
+            <h3>Choose 3 interventions to raise the fairness index</h3>
+          </div>
+          <div class="policy-options">
+            <button data-policy="price">Transparent farmgate prices</button>
+            <button data-policy="coop">Cooperative support fund</button>
+            <button data-policy="quality">Quality premium</button>
+            <button data-policy="storage">Seasonal storage credit</button>
+            <button data-policy="fine">Penalties for scale fraud</button>
+          </div>
+          <div class="policy-result">
+            <span>Fairness index</span>
+            <strong id="fairnessScore">42</strong>
+            <meter id="fairnessMeter" min="0" max="100" value="42"></meter>
+            <p id="policyResult">Choose policies to see effects on farmers, firms, and consumers.</p>
+          </div>
+        </div>
       <section id="scene-9" class="scene split" data-scene="9">
         <div class="network reveal" aria-label="Mạng lưới hợp tác xã">
           <span class="node n1">Hộ 1</span>
@@ -317,6 +390,24 @@
         </div>
       </section>
 
+        <div class="contract-builder reveal" aria-label="Fair contract builder">
+          <div>
+            <p class="eyebrow">Contract builder</p>
+            <h3>Click clauses to assemble a fair supply contract</h3>
+          </div>
+          <div class="clause-bank">
+            <button data-clause="floor">Floor price</button>
+            <button data-clause="formula">Transparent price formula</button>
+            <button data-clause="bonus">Quality premium</button>
+            <button data-clause="sharing">Upside sharing</button>
+            <button data-clause="training">Technical support</button>
+            <button data-clause="mediation">Dispute mediation</button>
+          </div>
+          <article class="contract-output">
+            <span id="contractBadge">0/6 clauses</span>
+            <p id="contractDraft">No protection clause yet. Select at least 4 clauses to reach a fair contract.</p>
+          </article>
+        </div>
       <section id="scene-11" class="scene finale" data-scene="11">
         <div class="final-cup reveal" aria-hidden="true">
           <div class="ring r1"></div>
@@ -334,6 +425,11 @@
           <h2 class="closing">Đằng sau vị đắng của cà phê không nên là vị đắng của người trồng.</h2>
           <p class="lead">Một ly cà phê chỉ thực sự bền vững khi người trồng, doanh nghiệp và xã hội cùng được hưởng lợi.</p>
         </div>
+          <div class="final-scorecard" aria-live="polite">
+            <span>Interactive completion</span>
+            <strong id="finalScore">0/5 missions</strong>
+            <p id="finalMessage">Complete the interactive missions to turn this presentation into a living case study.</p>
+          </div>
       </section>
     </main>
 
