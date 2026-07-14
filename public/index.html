@@ -4,345 +4,203 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fair Bean Chain</title>
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='32' cy='32' rx='18' ry='26' fill='%23a45a2a' transform='rotate(24 32 32)'/%3E%3Cpath d='M31 10c8 11-6 19 2 44' fill='none' stroke='%23ffe0a3' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E"
-    />
     <meta
       name="description"
-      content="Web thuyết trình tương tác về quan hệ lợi ích kinh tế trong chuỗi cà phê Việt Nam."
+      content="Bài thuyết trình web về quan hệ lợi ích kinh tế trong chuỗi giá trị cà phê Việt Nam."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111610'/%3E%3Cpath d='M18 40c10 10 28 7 31-9 2-13-13-23-25-16-12 7-14 17-6 25z' fill='%23d7a84f'/%3E%3Cpath d='M30 15c7 10-6 16 3 31' fill='none' stroke='%23111610' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <canvas id="beanCanvas" aria-hidden="true"></canvas>
-    <div class="grain" aria-hidden="true"></div>
-    <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+    <canvas id="grainCanvas" aria-hidden="true"></canvas>
+    <div class="page-grid" aria-hidden="true"></div>
+    <div class="scroll-progress"><span id="progressBar"></span></div>
 
     <header class="topbar">
-      <a class="brand" href="#scene-1" aria-label="Về đầu trang">
-        <span class="brand-mark"></span>
+      <a class="brand" href="#intro" aria-label="Về đầu trang">
+        <span class="brand-icon"></span>
         <span>Fair Bean Chain</span>
       </a>
-      <nav class="nav" aria-label="Điều hướng cảnh">
-        <a href="#scene-1">Mở đầu</a>
-        <a href="#scene-3">Chuỗi giá trị</a>
-        <a href="#scene-7">Nhà nước</a>
-        <a href="#scene-11">Kết luận</a>
+      <nav class="topnav" aria-label="Điều hướng">
+        <a href="#chain">Chuỗi giá trị</a>
+        <a href="#conflict">Mâu thuẫn</a>
+        <a href="#policy">Chính sách</a>
+        <a href="#closing">Kết luận</a>
       </nav>
     </header>
 
-    <aside class="scene-rail" aria-label="Danh sách cảnh">
-      <a href="#scene-1" data-nav="1">01</a>
-      <a href="#scene-2" data-nav="2">02</a>
-      <a href="#scene-3" data-nav="3">03</a>
-      <a href="#scene-4" data-nav="4">04</a>
-      <a href="#scene-5" data-nav="5">05</a>
-      <a href="#scene-6" data-nav="6">06</a>
-      <a href="#scene-7" data-nav="7">07</a>
-      <a href="#scene-8" data-nav="8">08</a>
-      <a href="#scene-9" data-nav="9">09</a>
-      <a href="#scene-10" data-nav="10">10</a>
-      <a href="#scene-11" data-nav="11">11</a>
+    <aside class="outline" aria-label="Mục lục slide">
+      <a href="#intro" data-link="intro"><span>01</span>Mở đầu</a>
+      <a href="#case" data-link="case"><span>02</span>Tình huống</a>
+      <a href="#chain" data-link="chain"><span>03</span>Chuỗi</a>
+      <a href="#split" data-link="split"><span>04</span>Phân chia</a>
+      <a href="#conflict" data-link="conflict"><span>05</span>Mâu thuẫn</a>
+      <a href="#policy" data-link="policy"><span>06</span>Nhà nước</a>
+      <a href="#contract" data-link="contract"><span>07</span>Giải pháp</a>
+      <a href="#closing" data-link="closing"><span>08</span>Kết luận</a>
     </aside>
 
     <main>
-      <section id="scene-1" class="scene hero" data-scene="1">
-        <div class="hero-copy reveal">
-          <p class="eyebrow">Kịch bản web tương tác</p>
+      <section id="intro" class="frame hero-frame" data-frame="intro">
+        <div class="frame-copy reveal">
+          <p class="kicker">MLN122 • Chương 5 • Quan hệ lợi ích kinh tế</p>
           <h1>Fair Bean Chain</h1>
           <p class="lead">
             Một ly cà phê không chỉ chứa cà phê. Nó chứa lao động, vốn, công nghệ,
-            thương hiệu, rủi ro và quyền thương lượng của nhiều chủ thể.
+            thương hiệu, rủi ro và quyền thương lượng của nhiều chủ thể trong nền kinh tế.
           </p>
           <div class="hero-actions">
-            <a class="primary-btn" href="#scene-2">
-              <span>Theo dấu hạt cà phê</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-            <span class="source-note">Dựa trên Chương 5, mục 5.3 - Giáo trình Kinh tế chính trị Mác - Lênin</span>
+            <a class="button primary" href="#case">Bắt đầu trình bày</a>
+            <a class="button ghost" href="#contract">Xem giải pháp</a>
           </div>
         </div>
-        <div class="price-stage reveal" aria-label="So sánh giá cà phê">
-          <div class="drop"></div>
-          <div class="cup-visual">
-            <div class="steam s1"></div>
-            <div class="steam s2"></div>
-            <div class="coffee-surface"></div>
+
+        <div class="hero-board reveal">
+          <div class="board-toolbar">
+            <span></span><span></span><span></span>
+            <strong>Value map.fig</strong>
           </div>
-          <div class="price-card retail">
-            <small>Một ly tại thành phố</small>
-            <strong>185.000đ</strong>
+          <div class="price-stack">
+            <article>
+              <small>Farmgate price</small>
+              <strong>40.000đ/kg</strong>
+              <p>Cà phê nhân bán cho thương lái.</p>
+            </article>
+            <article class="accent">
+              <small>Retail cup</small>
+              <strong>185.000đ</strong>
+              <p>Trải nghiệm cuối cùng tại thành phố.</p>
+            </article>
           </div>
-          <div class="price-card farm">
-            <small>Một ký cà phê nhân</small>
-            <strong>40.000đ</strong>
+          <div class="bean-mark" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <section id="case" class="frame two-column" data-frame="case">
+        <div class="frame-copy reveal">
+          <p class="kicker">Tình huống khởi động</p>
+          <h2>Anh Khánh trồng cà phê, nhưng phần lợi ích anh nhận lại nhỏ nhất.</h2>
+          <p>
+            Khi giá thế giới giảm, người trồng cà phê chịu áp lực bán ngay để thu hồi vốn.
+            Trong khi đó, các khâu phía sau có hợp đồng, kho dự trữ, thương hiệu và kênh bán lẻ.
+          </p>
+        </div>
+        <div class="case-panel reveal">
+          <div class="timeline-line"></div>
+          <article><span>01</span><strong>Đầu vụ</strong><p>Chi phí giống, phân bón, nước tưới, nhân công.</p></article>
+          <article><span>02</span><strong>Giữa vụ</strong><p>Rủi ro thời tiết, sâu bệnh, biến động vật tư.</p></article>
+          <article><span>03</span><strong>Thu hoạch</strong><p>Thiếu kho và vốn làm nông dân dễ phải bán ngay.</p></article>
+          <article><span>04</span><strong>Thương lượng</strong><p>Thông tin thị trường và quyền quyết định không cân bằng.</p></article>
+        </div>
+      </section>
+
+      <section id="chain" class="frame" data-frame="chain">
+        <div class="section-heading reveal">
+          <p class="kicker">Blueprint chuỗi giá trị</p>
+          <h2>Giá trị tăng lên qua từng khâu, nhưng quyền lực không tăng đều.</h2>
+        </div>
+        <div class="value-flow reveal">
+          <article><span>01</span><h3>Nông dân</h3><p>Lao động, đất đai, nguyên liệu, rủi ro sản xuất.</p></article>
+          <article><span>02</span><h3>Thương lái</h3><p>Thu gom, phân loại, vốn lưu động, thông tin giá.</p></article>
+          <article><span>03</span><h3>Rang xay</h3><p>Công nghệ, tiêu chuẩn chất lượng, chế biến sâu.</p></article>
+          <article><span>04</span><h3>Bán lẻ</h3><p>Dịch vụ, mặt bằng, thương hiệu, trải nghiệm.</p></article>
+          <article><span>05</span><h3>Người tiêu dùng</h3><p>Chi trả cho chất lượng, tiện ích và câu chuyện sản phẩm.</p></article>
+        </div>
+      </section>
+
+      <section id="split" class="frame two-column" data-frame="split">
+        <div class="cup-model reveal">
+          <div style="--h: 18%; --c: #2f1c16">Nguyên liệu</div>
+          <div style="--h: 17%; --c: #6e3c25">Rang xay</div>
+          <div style="--h: 20%; --c: #b56d35">Mặt bằng</div>
+          <div style="--h: 19%; --c: #d7a84f">Thương hiệu</div>
+          <div style="--h: 26%; --c: #a7d8b6">Dịch vụ</div>
+        </div>
+        <div class="frame-copy reveal">
+          <p class="kicker">Giải phẫu một ly cà phê</p>
+          <h2>185.000đ không phải toàn bộ là tiền cà phê.</h2>
+          <p>
+            Giá bán lẻ còn bao gồm chi phí biến cà phê nhân thành sản phẩm hoàn chỉnh:
+            mặt bằng, nhân sự, pha chế, thương hiệu, dịch vụ và trải nghiệm khách hàng.
+          </p>
+          <div class="metric-row">
+            <article><small>1kg nhân sau rang</small><strong>~820g</strong></article>
+            <article><small>Số ly ước tính</small><strong>45 ly</strong></article>
           </div>
         </div>
       </section>
 
-      <section id="scene-2" class="scene split" data-scene="2">
-        <div class="section-copy reveal">
-          <p class="eyebrow">Cảnh 2</p>
-          <h2>Trước khi có giá 40.000 đồng, đã có một năm lao động</h2>
+      <section id="conflict" class="frame two-column" data-frame="conflict">
+        <div class="frame-copy reveal">
+          <p class="kicker">Mâu thuẫn lợi ích</p>
+          <h2>Lợi ích kinh tế vừa thống nhất, vừa đối lập.</h2>
           <p>
-            Anh Khánh đầu tư giống, phân bón, nước tưới và công chăm sóc. Tiền bỏ ra
-            ngay từ đầu vụ, trong khi thu nhập chỉ xuất hiện sau nhiều tháng.
+            Tất cả chủ thể đều cần chuỗi cà phê vận hành hiệu quả. Nhưng khi phân chia giá trị,
+            bên có vốn, thông tin, hợp đồng và thương hiệu thường có vị thế mạnh hơn.
           </p>
         </div>
-        <div class="timeline reveal">
-          <div class="plant">
-            <span class="stem"></span>
-            <span class="leaf l1"></span>
-            <span class="leaf l2"></span>
-            <span class="cherry c1"></span>
-            <span class="cherry c2"></span>
-            <span class="cherry c3"></span>
-          </div>
-          <ol>
-            <li><span>Đầu vụ</span><p>Giống, phân bón, nước tưới, công chăm sóc.</p></li>
-            <li><span>Giữa vụ</span><p>Mưa, hạn, sâu bệnh và giá vật tư làm chi phí biến động.</p></li>
-            <li><span>Cuối vụ</span><p>Thu hoạch, phơi, bảo quản; thiếu kho dễ phải bán ngay.</p></li>
-            <li><span>Thương lái đến</span><p>Giá đã hình thành, quyền quyết định của nông dân thường thấp.</p></li>
-          </ol>
-        </div>
-      </section>
-
-      <section id="scene-3" class="scene" data-scene="3">
-        <div class="section-copy narrow reveal">
-          <p class="eyebrow">Cảnh 3</p>
-          <h2>Giá tăng lên vì giá trị được tạo thêm</h2>
-          <p>
-            Chuỗi cà phê không phải một đường thẳng của lợi nhuận, mà là chuỗi đóng góp,
-            chi phí và rủi ro khác nhau.
-          </p>
-        </div>
-        <div class="chain reveal" aria-label="Chuỗi giá trị cà phê">
+        <div class="balance-board reveal">
           <article>
-            <span>01</span>
             <h3>Nông dân</h3>
-            <p>Nguyên liệu ban đầu, đất đai, lao động, thời tiết, sâu bệnh.</p>
+            <p>Đóng góp lao động, nguyên liệu và chịu rủi ro sản xuất trực tiếp.</p>
           </article>
+          <div class="balance-axis"></div>
           <article>
-            <span>02</span>
-            <h3>Thương lái</h3>
-            <p>Thu gom, phân loại, bảo quản, vận chuyển và chịu biến động giá.</p>
-          </article>
-          <article>
-            <span>03</span>
-            <h3>Rang xay</h3>
-            <p>Công nghệ, phối trộn, kiểm soát chất lượng, phát triển sản phẩm.</p>
-          </article>
-          <article>
-            <span>04</span>
-            <h3>Bán lẻ</h3>
-            <p>Pha chế, mặt bằng, dịch vụ, thương hiệu và trải nghiệm khách hàng.</p>
-          </article>
-          <article>
-            <span>05</span>
-            <h3>Người tiêu dùng</h3>
-            <p>Tạo nhu cầu và chi trả cho chất lượng, dịch vụ, không gian.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="scene-4" class="scene split" data-scene="4">
-        <div class="cup-anatomy reveal" aria-label="Giải phẫu một ly cà phê">
-          <div class="layer l-service">Dịch vụ</div>
-          <div class="layer l-brand">Thương hiệu</div>
-          <div class="layer l-place">Mặt bằng</div>
-          <div class="layer l-roast">Rang xay</div>
-          <div class="layer l-bean">Nguyên liệu</div>
-        </div>
-        <div class="section-copy reveal">
-          <p class="eyebrow">Cảnh 4</p>
-          <h2>185.000 đồng không phải toàn bộ là tiền cà phê</h2>
-          <p>
-            Doanh thu bán lẻ phải chi trả cho quá trình biến cà phê nhân thành sản phẩm
-            và trải nghiệm hoàn chỉnh. Vì vậy, doanh thu không tự động là lợi nhuận.
-          </p>
-          <div class="calculator" aria-label="Mô phỏng doanh thu từ một ký cà phê">
-            <label>
-              Giá một ly
-              <input id="cupPrice" type="range" min="85000" max="185000" value="185000" step="5000" />
-            </label>
-            <label>
-              Gram cà phê rang mỗi ly
-              <input id="grams" type="range" min="16" max="22" value="18" step="1" />
-            </label>
-            <div class="calc-grid">
-              <div><small>Số ly ước tính</small><strong id="cupsOut">45</strong></div>
-              <div><small>Doanh thu mô phỏng</small><strong id="revenueOut">8,4 triệu</strong></div>
-            </div>
-            <p class="fineprint">Mô phỏng học tập: 1kg cà phê nhân sau rang còn khoảng 82% khối lượng.</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="scene-5" class="scene split" data-scene="5">
-        <div class="section-copy reveal">
-          <p class="eyebrow">Cảnh 5</p>
-          <h2>Giá trị được tạo bởi nhiều người, nhưng không được chia đều</h2>
-          <p>
-            Giáo trình nhấn mạnh lợi ích kinh tế là lợi ích vật chất mà các chủ thể thu
-            được trong hoạt động kinh tế. Các lợi ích vừa thống nhất, vừa mâu thuẫn.
-          </p>
-          <blockquote>
-            Vấn đề không nằm ở việc doanh nghiệp có lợi nhuận, mà ở khả năng lạm dụng vị thế
-            mạnh để đẩy chi phí và rủi ro sang bên yếu hơn.
-          </blockquote>
-        </div>
-        <div class="scale reveal" aria-label="Chiếc cân lợi ích">
-          <div class="beam"></div>
-          <div class="pivot"></div>
-          <div class="pan left">
-            <h3>Nông dân</h3>
-            <p>Lao động, đất đai, nguyên liệu, rủi ro sản xuất, thời gian.</p>
-          </div>
-          <div class="pan right">
             <h3>Doanh nghiệp</h3>
-            <p>Vốn, công nghệ, thông tin, thương hiệu, hệ thống phân phối, hợp đồng.</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="scene-6" class="scene storm-scene" data-scene="6">
-        <canvas id="stormCanvas" aria-hidden="true"></canvas>
-        <div class="section-copy narrow reveal">
-          <p class="eyebrow">Cảnh 6</p>
-          <h2>Khi giá thế giới giảm, ai là người chịu rủi ro?</h2>
-          <p>
-            Nông dân bán theo giá từng ngày có thể nhận giá thấp đúng lúc thu hoạch.
-            Doanh nghiệp lớn thường có hợp đồng, dự trữ hàng, nhiều vùng nguyên liệu và
-            công cụ phòng ngừa biến động.
-          </p>
-        </div>
-        <div class="risk-grid reveal">
-          <article>
-            <h3>Ô nhỏ</h3>
-            <p>Nông dân chịu trực tiếp rủi ro thời tiết, sâu bệnh, chi phí vật tư và giá tại thời điểm bán.</p>
-          </article>
-          <article>
-            <h3>Mái hợp đồng</h3>
-            <p>Hợp đồng giá cố định giúp dự toán chi phí, ổn định nguồn cung và chuyển một phần rủi ro.</p>
+            <p>Đóng góp vốn, công nghệ, hệ thống phân phối và thương hiệu.</p>
           </article>
         </div>
       </section>
 
-      <section class="scene compact-lab shock-section" data-scene="6">
-      </section>
-
-      <section id="scene-7" class="scene split policy" data-scene="7">
-        <div class="state-hand reveal" aria-hidden="true">
-          <span>Nhà nước</span>
+      <section id="policy" class="frame" data-frame="policy">
+        <div class="section-heading reveal">
+          <p class="kicker">Vai trò Nhà nước</p>
+          <h2>Thị trường cần khung pháp lý để lợi ích không lệch quá xa.</h2>
         </div>
-        <div class="section-copy reveal">
-          <p class="eyebrow">Cảnh 7</p>
-          <h2>Nhà nước tạo điều kiện để lợi ích hài hòa hơn</h2>
-          <p>
-            Chỉ dựa vào nguyên tắc thị trường là chưa đủ, vì quan hệ lợi ích kinh tế luôn
-            có cả mặt thống nhất và mâu thuẫn.
-          </p>
-          <div class="tool-list">
-            <span>Pháp luật</span>
-            <span>Chính sách kinh tế</span>
-            <span>Công cụ hành chính</span>
-            <span>Thông tin</span>
-            <span>Hòa giải tranh chấp</span>
-          </div>
+        <div class="policy-grid reveal">
+          <article><span>01</span><h3>Bảo vệ lợi ích hợp pháp</h3><p>Minh bạch cân đo, hợp đồng, chất lượng, thông tin giá.</p></article>
+          <article><span>02</span><h3>Điều hòa lợi ích</h3><p>Khuyến khích hợp tác xã, liên kết chuỗi và chia sẻ rủi ro.</p></article>
+          <article><span>03</span><h3>Kiểm soát tiêu cực</h3><p>Ngăn ép giá, gian lận, phá vỡ hợp đồng và thiếu minh bạch.</p></article>
+          <article><span>04</span><h3>Giải quyết mâu thuẫn</h3><p>Cơ chế hòa giải, trọng tài và chế tài khi có vi phạm.</p></article>
         </div>
       </section>
 
-      <section id="scene-8" class="scene" data-scene="8">
-        <div class="section-copy narrow reveal">
-          <p class="eyebrow">Cảnh 8</p>
-          <h2>Bốn vai trò của Nhà nước trong hài hòa lợi ích</h2>
+      <section id="contract" class="frame" data-frame="contract">
+        <div class="section-heading reveal">
+          <p class="kicker">Thiết kế giải pháp</p>
+          <h2>Công bằng phải được viết thành điều khoản.</h2>
         </div>
-        <div class="doors reveal">
-          <article>
-            <span>01</span>
-            <h3>Bảo vệ lợi ích hợp pháp</h3>
-            <p>Công khai giá cả, kiểm soát cân đo, bảo vệ hợp đồng, chỉ dẫn địa lý.</p>
-          </article>
-          <article>
-            <span>02</span>
-            <h3>Điều hòa lợi ích</h3>
-            <p>Giá sàn, thưởng chất lượng, chia sẻ khi giá tăng, liên kết hợp tác xã.</p>
-          </article>
-          <article>
-            <span>03</span>
-            <h3>Kiểm soát tiêu cực</h3>
-            <p>Ngăn ép giá, gian lận chất lượng, phá vỡ hợp đồng, thiếu minh bạch.</p>
-          </article>
-          <article>
-            <span>04</span>
-            <h3>Giải quyết mâu thuẫn</h3>
-            <p>Mẫu hợp đồng rõ ràng, hòa giải, trọng tài, chế tài khi vi phạm.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="scene-9" class="scene split" data-scene="9">
-        <div class="network reveal" aria-label="Mạng lưới hợp tác xã">
-          <span class="node n1">Hộ 1</span>
-          <span class="node n2">Hộ 2</span>
-          <span class="node n3">Hộ 3</span>
-          <span class="node n4">Hộ 4</span>
-          <span class="node coop">Hợp tác xã</span>
-          <span class="node biz">Doanh nghiệp</span>
-        </div>
-        <div class="section-copy reveal">
-          <p class="eyebrow">Cảnh 9</p>
-          <h2>Một nông dân khó thay đổi giá. Một nghìn nông dân có thể thay đổi vị thế.</h2>
-          <p>
-            Hợp tác xã giúp gom sản lượng, thống nhất tiêu chuẩn, đầu tư kho, tiếp cận tín
-            dụng, ký hợp đồng trực tiếp và đại diện nông dân đàm phán.
-          </p>
-          <p class="source-note">
-            Liên hệ thực tế: Nghị định 98/2018/NĐ-CP và Luật Hợp tác xã 2023 tạo cơ sở cho
-            liên kết sản xuất, tiêu thụ nông sản.
-          </p>
-        </div>
-      </section>
-
-      <section id="scene-10" class="scene" data-scene="10">
-        <div class="section-copy narrow reveal">
-          <p class="eyebrow">Cảnh 10</p>
-          <h2>Công bằng phải được viết thành điều khoản</h2>
-        </div>
-        <div class="contract reveal">
-          <article><h3>Giá thu mua tối thiểu</h3><p>Bù đắp chi phí hợp lý khi thị trường giảm sâu.</p></article>
-          <article><h3>Công thức giá minh bạch</h3><p>Điều chỉnh theo thị trường, chất lượng và chi phí liên quan.</p></article>
-          <article><h3>Thưởng chất lượng</h3><p>Cà phê đạt tiêu chuẩn cao hơn được trả thêm.</p></article>
-          <article><h3>Chia sẻ khi giá tăng</h3><p>Nông dân hưởng một phần lợi ích khi giá bán tăng mạnh.</p></article>
+        <div class="contract-grid reveal">
+          <article><h3>Giá thu mua tối thiểu</h3><p>Bảo vệ nông dân khi thị trường giảm sâu.</p></article>
+          <article><h3>Công thức giá minh bạch</h3><p>Điều chỉnh theo thị trường, chất lượng và chi phí hợp lý.</p></article>
+          <article><h3>Thưởng chất lượng</h3><p>Liên kết thu nhập với tiêu chuẩn sản xuất tốt hơn.</p></article>
+          <article><h3>Chia sẻ khi giá tăng</h3><p>Nông dân hưởng thêm khi giá bán cuối cùng tăng mạnh.</p></article>
           <article><h3>Hỗ trợ kỹ thuật</h3><p>Giống, quy trình canh tác, truy xuất nguồn gốc.</p></article>
-          <article><h3>Giải quyết tranh chấp</h3><p>Cơ chế hòa giải và trách nhiệm rõ ràng khi vi phạm.</p></article>
+          <article><h3>Giải quyết tranh chấp</h3><p>Trách nhiệm rõ ràng, hòa giải và chế tài cụ thể.</p></article>
         </div>
       </section>
 
-      <section id="scene-11" class="scene finale" data-scene="11">
-        <div class="final-cup reveal" aria-hidden="true">
-          <div class="ring r1"></div>
-          <div class="ring r2"></div>
-          <div class="ring r3"></div>
+      <section id="closing" class="frame closing-frame" data-frame="closing">
+        <div class="closing-orbit reveal" aria-hidden="true">
+          <span></span><span></span><span></span>
         </div>
-        <div class="section-copy reveal">
-          <p class="eyebrow">Cảnh 11</p>
-          <h2>Một chuỗi cà phê bền vững không thể có một mắt xích luôn chịu thiệt</h2>
-          <div class="takeaways">
-            <article><h3>Nông dân</h3><p>Thu nhập đủ tái sản xuất, được thưởng chất lượng, giảm rủi ro.</p></article>
-            <article><h3>Doanh nghiệp</h3><p>Lợi nhuận hợp lý, nguồn nguyên liệu ổn định, thương hiệu bền vững.</p></article>
-            <article><h3>Xã hội</h3><p>Môi trường pháp lý minh bạch, kiểm soát tiêu cực, giải quyết mâu thuẫn.</p></article>
-          </div>
-          <h2 class="closing">Đằng sau vị đắng của cà phê không nên là vị đắng của người trồng.</h2>
-          <p class="lead">Một ly cà phê chỉ thực sự bền vững khi người trồng, doanh nghiệp và xã hội cùng được hưởng lợi.</p>
+        <div class="frame-copy reveal">
+          <p class="kicker">Kết luận</p>
+          <h2>Một chuỗi cà phê bền vững không thể có một mắt xích luôn chịu thiệt.</h2>
+          <p class="lead">
+            Lợi ích của nông dân, doanh nghiệp và xã hội cần được phối hợp bằng hợp đồng,
+            hợp tác xã, minh bạch thị trường và chính sách Nhà nước phù hợp.
+          </p>
         </div>
       </section>
     </main>
 
     <footer class="footer">
       <strong>Fair Bean Chain</strong>
-      <span>Nội dung học tập môn Kinh tế chính trị Mác - Lênin. Giá cả và phép tính chỉ dùng cho mô phỏng tình huống học tập.</span>
+      <span>Web presentation for MLN122 • Chương 5: Quan hệ lợi ích kinh tế ở Việt Nam.</span>
     </footer>
 
     <script src="script.js"></script>
