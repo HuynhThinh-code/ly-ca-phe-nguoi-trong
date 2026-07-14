@@ -3,6 +3,12 @@ const sceneLinks = [...document.querySelectorAll("[data-nav]")];
 const scenes = [...document.querySelectorAll(".scene")];
 const revealEls = [...document.querySelectorAll(".reveal")];
 
+scenes.forEach((scene) => {
+  [...scene.querySelectorAll(".reveal")].forEach((el, index) => {
+    el.style.transitionDelay = `${Math.min(index * 90, 270)}ms`;
+  });
+});
+
 const revealObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -23,12 +29,14 @@ const sceneObserver = new IntersectionObserver(
     if (!active) return;
     const scene = active.target.dataset.scene;
     document.body.dataset.scene = scene;
+    scenes.forEach((item) => item.classList.toggle("active-scene", item === active.target));
     sceneLinks.forEach((link) => link.classList.toggle("active", link.dataset.nav === scene));
   },
   { threshold: [0.36, 0.52, 0.68] }
 );
 
 scenes.forEach((scene) => sceneObserver.observe(scene));
+if (scenes[0]) scenes[0].classList.add("active-scene");
 
 function updateProgress() {
   const total = document.documentElement.scrollHeight - window.innerHeight;
@@ -59,37 +67,6 @@ function updateCalculator() {
 
 [cupPrice, grams].forEach((input) => input.addEventListener("input", updateCalculator));
 updateCalculator();
-
-const missions = {
-  actor: false,
-  shock: false,
-  policy: false,
-  contract: false,
-  quiz: false,
-};
-
-function updateMissionScore() {
-  const done = Object.values(missions).filter(Boolean).length;
-  document.querySelectorAll("[data-mission]").forEach((item) => {
-    item.classList.toggle("done", missions[item.dataset.mission]);
-  });
-  const missionScore = document.querySelector("#missionScore");
-  const finalScore = document.querySelector("#finalScore");
-  const finalMessage = document.querySelector("#finalMessage");
-  if (missionScore) missionScore.textContent = `${done}/5`;
-  if (finalScore) finalScore.textContent = `${done}/5 missions`;
-  if (finalMessage) {
-    finalMessage.textContent =
-      done === 5
-        ? "Case complete: you connected interests, risk, policy, and contract design."
-        : "Complete every interaction to turn the presentation into a living case study.";
-  }
-}
-
-function completeMission(name) {
-  missions[name] = true;
-  updateMissionScore();
-}
 
 const actorStories = {
   farmer: {
@@ -122,7 +99,6 @@ function renderActor(actor = "farmer") {
   const story = actorStories[actor];
   actorTokens.forEach((button) => button.classList.toggle("active", button.dataset.actor === actor));
   actorReadout.innerHTML = `<h4>${story.title}</h4><p>${story.body}</p>`;
-  completeMission("actor");
 }
 
 actorTokens.forEach((button) => {
@@ -148,7 +124,6 @@ function updateShock() {
   brandShock.textContent = shock < -25 ? "protected but margin tightens" : "stable because of contracts";
   farmerMeter.value = farmerHealth;
   brandMeter.value = brandHealth;
-  completeMission("shock");
 }
 
 if (shockRange) {
@@ -168,7 +143,6 @@ quizChoices.forEach((button) => {
         ? "Correct. A fair contract changes risk distribution, not just the final cup price."
         : "Not quite. That does not directly protect farmers at the farmgate.";
     }
-    if (correct) completeMission("quiz");
   });
 });
 
@@ -195,7 +169,6 @@ function updatePolicyLab() {
         ? "Choose policies to see effects on farmers, firms, and consumers."
         : [...selectedPolicies].map((key) => policyText[key]).join(" ");
   }
-  if (selectedPolicies.size >= 3) completeMission("policy");
 }
 
 policyButtons.forEach((button) => {
@@ -232,7 +205,6 @@ function updateContract() {
             count >= 4 ? "Fairness threshold reached." : "Add more clauses to protect the weaker side."
           }`;
   }
-  if (count >= 4) completeMission("contract");
 }
 
 clauseButtons.forEach((button) => {
@@ -244,8 +216,6 @@ clauseButtons.forEach((button) => {
     updateContract();
   });
 });
-
-updateMissionScore();
 
 const beanCanvas = document.querySelector("#beanCanvas");
 const beanCtx = beanCanvas.getContext("2d");
