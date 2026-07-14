@@ -658,6 +658,158 @@ p {
   background: linear-gradient(90deg, var(--earth), var(--copper), var(--leaf));
 }
 
+.chain article {
+  cursor: pointer;
+  transition: transform 260ms ease, border-color 260ms ease, background 260ms ease, box-shadow 260ms ease;
+}
+
+.chain article:hover,
+.chain article:focus-visible,
+.chain article.active-chain {
+  transform: translateY(-8px);
+  border-color: rgba(244, 203, 115, 0.58);
+  background: rgba(255, 242, 214, 0.12);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.22);
+  outline: none;
+}
+
+.chain article.active-chain::after {
+  content: "";
+  position: absolute;
+  inset: auto 20px 18px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--gold), var(--leaf));
+  box-shadow: 0 0 24px rgba(244, 203, 115, 0.36);
+}
+
+.chain-lab {
+  --chain-progress: 0%;
+  margin-top: 20px;
+  padding: 24px;
+  border: 1px solid rgba(244, 203, 115, 0.28);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(244, 203, 115, 0.11), rgba(99, 179, 111, 0.08)),
+    rgba(22, 13, 9, 0.72);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.chain-route {
+  position: relative;
+  height: 58px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.route-track {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 50%;
+  height: 4px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, var(--gold) 0 var(--chain-progress), rgba(255, 242, 214, 0.18) var(--chain-progress) 100%);
+}
+
+.route-bean {
+  position: absolute;
+  left: var(--chain-left, 8%);
+  top: 50%;
+  width: 34px;
+  height: 44px;
+  transform: translate(-50%, -50%) rotate(28deg);
+  border-radius: 50%;
+  background:
+    linear-gradient(90deg, transparent 45%, rgba(255, 242, 214, 0.34) 46% 54%, transparent 55%),
+    radial-gradient(circle at 32% 28%, #f5cb73, #8b3e25 70%);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3), 0 0 22px rgba(244, 203, 115, 0.28);
+  transition: left 560ms cubic-bezier(0.2, 0.9, 0.2, 1), transform 560ms ease;
+  z-index: 2;
+}
+
+.route-dot {
+  position: relative;
+  z-index: 1;
+  width: 16px;
+  height: 16px;
+  justify-self: center;
+  border: 2px solid rgba(255, 242, 214, 0.36);
+  border-radius: 50%;
+  background: #160d09;
+  transition: background 260ms ease, transform 260ms ease, border-color 260ms ease;
+}
+
+.route-dot.active {
+  transform: scale(1.35);
+  border-color: var(--gold);
+  background: var(--gold);
+}
+
+.chain-detail {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.72fr) 1fr auto;
+  align-items: end;
+  gap: 18px;
+}
+
+.chain-detail h3 {
+  margin-bottom: 8px;
+  color: var(--cream);
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+}
+
+.chain-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.chain-detail-grid article {
+  min-height: 122px;
+  padding: 16px;
+  border: 1px solid rgba(255, 242, 214, 0.14);
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.chain-detail-grid small {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-weight: 780;
+}
+
+.chain-detail-grid strong {
+  color: var(--cream);
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.auto-chain-btn {
+  min-height: 48px;
+  padding: 0 18px;
+  color: #160d09;
+  border: 0;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--gold), #f7a85e);
+  font-weight: 900;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.auto-chain-btn:hover,
+.auto-chain-btn:focus-visible {
+  filter: brightness(1.06);
+  outline: 2px solid rgba(255, 242, 214, 0.44);
+  outline-offset: 3px;
+}
+
 .cup-anatomy {
   display: grid;
   align-content: end;
@@ -1080,16 +1232,34 @@ blockquote {
   transform: translateY(0) scale(1);
   filter: blur(0);
   clip-path: inset(0 0 0 0);
-}meter {
+}
+
+meter {
   width: 100%;
   height: 16px;
   accent-color: var(--gold);
-}@media (max-width: 980px) {
+}
+
+@media (max-width: 980px) {
   .hero,
   .split,
   .finale {
     grid-template-columns: 1fr;
-  }}
+  }
+
+  .chain-detail {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .chain-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auto-chain-btn {
+    justify-self: start;
+  }
+}
 
 @media (max-width: 720px) {
   .topbar {
@@ -1128,10 +1298,16 @@ blockquote {
   }
 
   .timeline,
+  .chain,
   .risk-grid,
   .calc-grid {
     grid-template-columns: 1fr;
-  }}
+  }
+
+  .chain-lab {
+    padding: 18px;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *,

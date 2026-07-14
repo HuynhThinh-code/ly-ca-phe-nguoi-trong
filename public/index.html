@@ -12,7 +12,7 @@
       name="description"
       content="Web thuyết trình tương tác về quan hệ lợi ích kinh tế trong chuỗi cà phê Việt Nam."
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=chain-lab-20260714-1" />
   </head>
   <body>
     <canvas id="beanCanvas" aria-hidden="true"></canvas>
@@ -143,6 +143,39 @@
             <h3>Người tiêu dùng</h3>
             <p>Tạo nhu cầu và chi trả cho chất lượng, dịch vụ, không gian.</p>
           </article>
+        </div>
+        <div class="chain-lab reveal" aria-live="polite">
+          <div class="chain-route" aria-hidden="true">
+            <span class="route-track"></span>
+            <span class="route-bean" id="routeBean"></span>
+            <span class="route-dot active"></span>
+            <span class="route-dot"></span>
+            <span class="route-dot"></span>
+            <span class="route-dot"></span>
+            <span class="route-dot"></span>
+          </div>
+          <div class="chain-detail">
+            <div>
+              <p class="eyebrow">Phân tích nhanh</p>
+              <h3 id="chainActorTitle">Nông dân</h3>
+              <p id="chainActorSummary">Tạo ra nguyên liệu ban đầu và chịu nhiều rủi ro sản xuất nhất.</p>
+            </div>
+            <div class="chain-detail-grid">
+              <article>
+                <small>Đóng góp</small>
+                <strong id="chainContribution">Lao động, đất đai, chăm sóc cây trồng.</strong>
+              </article>
+              <article>
+                <small>Rủi ro</small>
+                <strong id="chainRisk">Thời tiết, sâu bệnh, giá giảm lúc thu hoạch.</strong>
+              </article>
+              <article>
+                <small>Lợi ích thường nhận</small>
+                <strong id="chainBenefit">Thấp hơn so với rủi ro và công sức bỏ ra.</strong>
+              </article>
+            </div>
+            <button class="auto-chain-btn" id="chainAuto" type="button">Tự chạy chuỗi</button>
+          </div>
         </div>
       </section>
 
@@ -345,6 +378,6 @@
       <span>Nội dung học tập môn Kinh tế chính trị Mác - Lênin. Giá cả và phép tính chỉ dùng cho mô phỏng tình huống học tập.</span>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=chain-lab-20260714-1"></script>
   </body>
 </html>

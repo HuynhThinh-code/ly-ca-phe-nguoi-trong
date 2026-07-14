@@ -68,6 +68,108 @@ function updateCalculator() {
 [cupPrice, grams].forEach((input) => input.addEventListener("input", updateCalculator));
 updateCalculator();
 
+const chainItems = [...document.querySelectorAll(".chain > article")];
+const chainRoute = document.querySelector(".chain-lab");
+const routeDots = [...document.querySelectorAll(".route-dot")];
+const chainActorTitle = document.querySelector("#chainActorTitle");
+const chainActorSummary = document.querySelector("#chainActorSummary");
+const chainContribution = document.querySelector("#chainContribution");
+const chainRisk = document.querySelector("#chainRisk");
+const chainBenefit = document.querySelector("#chainBenefit");
+const chainAuto = document.querySelector("#chainAuto");
+let chainAutoTimer = 0;
+
+const chainProfiles = [
+  {
+    title: "Nông dân",
+    summary: "Tạo ra nguyên liệu ban đầu và chịu nhiều rủi ro sản xuất nhất.",
+    contribution: "Lao động, đất đai, chăm sóc cây trồng.",
+    risk: "Thời tiết, sâu bệnh, giá giảm lúc thu hoạch.",
+    benefit: "Thường nhận phần nhỏ vì thiếu kho, vốn và thông tin giá.",
+  },
+  {
+    title: "Thương lái",
+    summary: "Nối nhiều hộ sản xuất nhỏ với nhà rang xay và thị trường lớn hơn.",
+    contribution: "Thu gom, phân loại, vận chuyển, ứng vốn.",
+    risk: "Biến động giá ngắn hạn, tồn kho, hao hụt chất lượng.",
+    benefit: "Có lợi thế thông tin và khả năng gom sản lượng.",
+  },
+  {
+    title: "Rang xay",
+    summary: "Biến nguyên liệu thô thành sản phẩm có tiêu chuẩn và hương vị ổn định.",
+    contribution: "Công nghệ, kiểm soát chất lượng, phối trộn, bao bì.",
+    risk: "Chi phí máy móc, tiêu chuẩn đầu ra, cạnh tranh thương hiệu.",
+    benefit: "Giữ thêm giá trị nhờ chế biến sâu và thương hiệu sản phẩm.",
+  },
+  {
+    title: "Bán lẻ",
+    summary: "Bán trải nghiệm cuối cùng, nơi giá trị thương hiệu được nhìn thấy rõ nhất.",
+    contribution: "Mặt bằng, nhân sự, pha chế, dịch vụ, marketing.",
+    risk: "Tiền thuê, vận hành, thị hiếu khách hàng, cạnh tranh cửa hàng.",
+    benefit: "Có thể thu giá cao nhờ không gian, tiện ích và trải nghiệm.",
+  },
+  {
+    title: "Người tiêu dùng",
+    summary: "Chi trả cho sản phẩm cuối cùng và gián tiếp định hình hướng sản xuất.",
+    contribution: "Nhu cầu thị trường, phản hồi chất lượng, lựa chọn tiêu dùng.",
+    risk: "Trả giá cao nhưng khó biết phần nào quay về người trồng.",
+    benefit: "Nhận chất lượng, dịch vụ, câu chuyện và sự tiện lợi.",
+  },
+];
+
+function setChainStep(index) {
+  if (!chainItems.length || !chainRoute) return;
+  const safeIndex = Math.max(0, Math.min(chainProfiles.length - 1, index));
+  const profile = chainProfiles[safeIndex];
+  const progress = safeIndex * 25;
+  const left = 8 + safeIndex * 21;
+
+  chainRoute.style.setProperty("--chain-progress", `${progress}%`);
+  chainRoute.style.setProperty("--chain-left", `${left}%`);
+  chainItems.forEach((item, itemIndex) => {
+    item.classList.toggle("active-chain", itemIndex === safeIndex);
+    item.setAttribute("aria-pressed", itemIndex === safeIndex ? "true" : "false");
+  });
+  routeDots.forEach((dot, dotIndex) => dot.classList.toggle("active", dotIndex <= safeIndex));
+
+  chainActorTitle.textContent = profile.title;
+  chainActorSummary.textContent = profile.summary;
+  chainContribution.textContent = profile.contribution;
+  chainRisk.textContent = profile.risk;
+  chainBenefit.textContent = profile.benefit;
+}
+
+chainItems.forEach((item, index) => {
+  item.tabIndex = 0;
+  item.setAttribute("role", "button");
+  item.setAttribute("aria-pressed", "false");
+  item.addEventListener("click", () => setChainStep(index));
+  item.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      setChainStep(index);
+    }
+  });
+});
+
+if (chainAuto) {
+  chainAuto.addEventListener("click", () => {
+    window.clearInterval(chainAutoTimer);
+    let index = 0;
+    setChainStep(index);
+    chainAutoTimer = window.setInterval(() => {
+      index += 1;
+      if (index >= chainProfiles.length) {
+        window.clearInterval(chainAutoTimer);
+        return;
+      }
+      setChainStep(index);
+    }, 1150);
+  });
+}
+
+setChainStep(0);
+
 const beanCanvas = document.querySelector("#beanCanvas");
 const beanCtx = beanCanvas.getContext("2d");
 const stormCanvas = document.querySelector("#stormCanvas");
