@@ -1,8 +1,9 @@
 {
-  "name": "ly-ca-phe-nguoi-trong",
+  "name": "fair-bean-chain",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node build.mjs",
+    "start": "node server.mjs"
   }
 }
