@@ -12,12 +12,50 @@
       name="description"
       content="Web thuyết trình tương tác về quan hệ lợi ích kinh tế trong chuỗi cà phê Việt Nam."
     />
-    <link rel="stylesheet" href="styles.css?v=presentation-nav-policy-20260714-1" />
+    <link rel="stylesheet" href="styles.css?v=khanh-game-shell-20260714-1" />
   </head>
   <body>
     <canvas id="beanCanvas" aria-hidden="true"></canvas>
     <div class="grain" aria-hidden="true"></div>
     <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+    <section class="story-gate" id="storyGate" role="dialog" aria-modal="true" aria-labelledby="storyTitle">
+      <div class="story-stage" aria-hidden="true">
+        <div class="khanh-model hero-model">
+          <span class="model-hat"></span>
+          <span class="model-head"></span>
+          <span class="model-body"></span>
+          <span class="model-arm left"></span>
+          <span class="model-arm right"></span>
+          <span class="model-bag"></span>
+          <span class="model-bean b1"></span>
+          <span class="model-bean b2"></span>
+        </div>
+      </div>
+      <div class="story-card">
+        <p class="eyebrow">Role-play presentation</p>
+        <h1 id="storyTitle">Bạn là Anh Khánh</h1>
+        <p>
+          Một người trồng cà phê ở Đắk Lắk. Bạn vừa bán 1kg cà phê nhân với giá 40.000đ,
+          nhưng ở thành phố, một ly cà phê có thể được bán với giá 85.000đ. Nhiệm vụ của bạn
+          là đi qua chuỗi giá trị để tìm xem lợi ích được tạo ra và phân chia như thế nào.
+        </p>
+        <div class="story-rules">
+          <span>01 Kéo thanh để mô phỏng số liệu</span>
+          <span>02 Bấm nhân vật/công cụ để mở lớp giải thích</span>
+          <span>03 Dùng sổ tay ở góc phải để xem luật chơi</span>
+        </div>
+        <button class="primary-btn story-start" id="startGame" type="button">
+          <span>Bắt đầu hành trình</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <div class="game-hud" id="gameHud" aria-live="polite">
+      <span>Vai: Anh Khánh</span>
+      <strong id="hudScene">Cảnh 1 · Mở đầu</strong>
+    </div>
 
     <button class="topbar-toggle" id="topbarToggle" type="button" aria-label="Mở thanh điều hướng" aria-expanded="false"></button>
 
@@ -483,6 +521,25 @@
       <span>Nội dung học tập môn Kinh tế chính trị Mác - Lênin. Giá cả và phép tính chỉ dùng cho mô phỏng tình huống học tập.</span>
     </footer>
 
-    <script src="script.js?v=presentation-nav-policy-20260714-1"></script>
+    <aside class="khanh-chat" id="khanhChat" aria-label="Sổ tay của Anh Khánh">
+      <button class="chat-head" id="chatToggle" type="button" aria-expanded="false">
+        <span class="mini-khanh" aria-hidden="true">
+          <span></span>
+        </span>
+        <strong>Sổ tay Anh Khánh</strong>
+        <small id="chatScene">Bạn đang ở cảnh 1</small>
+      </button>
+      <div class="chat-panel" id="chatPanel">
+        <p id="chatMessage">Bạn đang vào vai Anh Khánh, người trồng cà phê ở Đắk Lắk. Chọn một ô để xem luật chơi, hành động nên bấm, hoặc lời gợi ý khi thuyết trình.</p>
+        <div class="chat-choices">
+          <button type="button" data-chat-choice="rules">Luật chơi</button>
+          <button type="button" data-chat-choice="scene">Giải thích cảnh này</button>
+          <button type="button" data-chat-choice="talk">Gợi ý lời nói</button>
+          <button type="button" data-chat-choice="action">Tôi nên bấm gì?</button>
+        </div>
+      </div>
+    </aside>
+
+    <script src="script.js?v=khanh-game-shell-20260714-1"></script>
   </body>
 </html>

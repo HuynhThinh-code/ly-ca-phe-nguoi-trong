@@ -4,6 +4,126 @@ const scenes = [...document.querySelectorAll(".scene")];
 const revealEls = [...document.querySelectorAll(".reveal")];
 const topbar = document.querySelector("#topbar");
 const topbarToggle = document.querySelector("#topbarToggle");
+const storyGate = document.querySelector("#storyGate");
+const startGame = document.querySelector("#startGame");
+const gameHudScene = document.querySelector("#hudScene");
+const khanhChat = document.querySelector("#khanhChat");
+const chatToggle = document.querySelector("#chatToggle");
+const chatPanel = document.querySelector("#chatPanel");
+const chatScene = document.querySelector("#chatScene");
+const chatMessage = document.querySelector("#chatMessage");
+let currentScene = "1";
+
+const gameGuide = {
+  "1": {
+    name: "Cảnh 1 · Mở đầu",
+    scene: "Bạn là Anh Khánh. Cảnh này đặt vấn đề: vì sao 1kg cà phê nhân 40.000đ lại liên quan đến một ly cà phê 85.000đ ở thành phố.",
+    action: "Bấm nút theo dõi hạt cà phê hoặc cuộn xuống Cảnh 2 để bắt đầu hành trình.",
+    talk: "Mở bài nên nói: tôi không chỉ bán cà phê, tôi đang bước vào một chuỗi lợi ích có nhiều chủ thể."
+  },
+  "2": {
+    name: "Cảnh 2 · Một năm lao động",
+    scene: "Bạn kéo qua 12 tháng để thấy chi phí và công sức được bỏ ra trước khi có giá bán 40.000đ/kg.",
+    action: "Kéo thanh tháng, bấm các giai đoạn và thử nút gặp rủi ro để cây đổi trạng thái.",
+    talk: "Nhấn mạnh rằng giá bán xuất hiện cuối vụ, còn chi phí và rủi ro đã tích lũy từ đầu năm."
+  },
+  "3": {
+    name: "Cảnh 3 · Chuỗi giá trị",
+    scene: "Bạn đi qua các mắt xích từ nông dân, thương lái, rang xay, bán lẻ đến người tiêu dùng.",
+    action: "Bấm từng mắt xích hoặc bật các nút chi phí để thấy gánh nặng tăng khi tự ôm thêm khâu.",
+    talk: "Nói rằng giá trị được tạo thêm ở nhiều khâu, nhưng quyền quyết định giá không chia đều."
+  },
+  "4": {
+    name: "Cảnh 4 · 85.000đ chia thế nào",
+    scene: "Bạn mô phỏng một ly cà phê bán lẻ và xem phần nguyên liệu của người trồng chỉ chiếm tỷ lệ rất nhỏ.",
+    action: "Kéo giá một ly và gram cà phê mỗi ly, sau đó chỉ vào tỷ lệ nông dân nhận trên giá ly.",
+    talk: "Đây là cảnh gây chú ý nhất: 85.000đ không phải toàn bộ là tiền cà phê, và phần nguyên liệu chỉ khoảng 1% trong mô phỏng."
+  },
+  "5": {
+    name: "Cảnh 5 · Mâu thuẫn lợi ích",
+    scene: "Bạn điều chỉnh quyền mặc cả để thấy cán cân lợi ích nghiêng về bên có vốn, công nghệ, thông tin và thương hiệu.",
+    action: "Kéo thanh quyền mặc cả của nông dân và quan sát cán cân đổi độ nghiêng.",
+    talk: "Nói rằng mâu thuẫn không nằm ở chuyện doanh nghiệp có lợi nhuận, mà ở khả năng bên mạnh đẩy rủi ro sang bên yếu."
+  },
+  "6": {
+    name: "Cảnh 6 · Cú sốc giá",
+    scene: "Bạn gặp tình huống giá thế giới giảm: người bán ngay chịu rủi ro nhiều hơn bên có hợp đồng cố định.",
+    action: "Bấm mô phỏng cú sốc giá -30% để so sánh phản ứng của nông dân và doanh nghiệp.",
+    talk: "Liên hệ với đề: khi giá giảm, Anh Khánh lỗ nhưng doanh nghiệp có hợp đồng vẫn giữ được lợi thế."
+  },
+  "7": {
+    name: "Cảnh 7 · Vai trò Nhà nước",
+    scene: "Bạn xem các công cụ Nhà nước có thể làm quan hệ lợi ích bớt lệch như thế nào.",
+    action: "Bấm từng công cụ: pháp luật, chính sách kinh tế, hành chính, thông tin, hòa giải.",
+    talk: "Nói rằng thị trường cần luật chơi minh bạch để các lợi ích thống nhất và mâu thuẫn được xử lý."
+  },
+  "8": {
+    name: "Cảnh 8 · Bốn vai trò",
+    scene: "Bạn mở bốn vai trò của Nhà nước: bảo vệ, điều hòa, kiểm soát tiêu cực và giải quyết mâu thuẫn.",
+    action: "Click từng thẻ để lật sang ví dụ thực tế rồi click lại để quay về.",
+    talk: "Dùng cảnh này như phần nối với lý thuyết giáo trình: Nhà nước không thay thị trường, mà tạo điều kiện để thị trường công bằng hơn."
+  },
+  "9": {
+    name: "Cảnh 9 · Hợp tác xã",
+    scene: "Bạn thử tăng số hộ tham gia để thấy sức thương lượng tăng khi nông dân liên kết lại.",
+    action: "Kéo số hộ từ thấp lên cao và đọc phần giá bán giả định tăng thêm.",
+    talk: "Kết luận nhỏ: một hộ riêng lẻ yếu, nhưng 1.000 hộ có sản lượng và tiếng nói để đàm phán."
+  },
+  "10": {
+    name: "Cảnh 10 · Hợp đồng công bằng",
+    scene: "Bạn xây hợp đồng bằng cách chọn điều khoản bảo vệ người trồng cà phê.",
+    action: "Tick hoặc bỏ tick từng điều khoản để xem thu nhập ước tính thay đổi.",
+    talk: "Nói rằng công bằng không chỉ là thiện chí, mà phải được viết thành điều khoản cụ thể."
+  },
+  "11": {
+    name: "Cảnh 11 · Kết luận",
+    scene: "Bạn khép lại hành trình của Anh Khánh và nhìn lại ba lợi ích: nông dân, doanh nghiệp, xã hội.",
+    action: "Tick đủ 3 cam kết để hiện phản hồi cuối và dùng nó làm câu chốt.",
+    talk: "Câu chốt: đằng sau vị đắng của cà phê không nên là vị đắng của người trồng."
+  }
+};
+
+function updateGameContext(scene = currentScene) {
+  currentScene = scene;
+  const guide = gameGuide[scene] || gameGuide["1"];
+  if (gameHudScene) gameHudScene.textContent = guide.name;
+  if (chatScene) chatScene.textContent = `Bạn đang ở ${guide.name}`;
+}
+
+function setChatOpen(open) {
+  if (!khanhChat || !chatToggle) return;
+  khanhChat.classList.toggle("is-open", open);
+  chatToggle.setAttribute("aria-expanded", String(open));
+}
+
+function answerGuide(kind) {
+  if (!chatMessage) return;
+  const guide = gameGuide[currentScene] || gameGuide["1"];
+  const answers = {
+    rules: "Luật chơi: bạn là Anh Khánh. Đi qua từng cảnh, kéo thanh, bấm thẻ, thử mô phỏng và dùng kết quả để giải thích quan hệ lợi ích kinh tế trong chuỗi cà phê.",
+    scene: guide.scene,
+    talk: guide.talk,
+    action: guide.action,
+  };
+  chatMessage.textContent = answers[kind] || guide.scene;
+}
+
+if (storyGate) document.body.classList.add("game-locked");
+startGame?.addEventListener("click", () => {
+  document.body.classList.add("game-started");
+  document.body.classList.remove("game-locked");
+  window.setTimeout(() => {
+    storyGate?.setAttribute("hidden", "");
+  }, 460);
+  setChatOpen(false);
+  updateGameContext("1");
+  document.querySelector("#scene-1")?.scrollIntoView({ behavior: "smooth" });
+});
+
+chatToggle?.addEventListener("click", () => setChatOpen(!khanhChat?.classList.contains("is-open")));
+document.querySelectorAll("[data-chat-choice]").forEach((button) => {
+  button.addEventListener("click", () => answerGuide(button.dataset.chatChoice));
+});
 
 function setTopbar(open) {
   if (!topbar || !topbarToggle) return;
@@ -59,6 +179,7 @@ const sceneObserver = new IntersectionObserver(
     if (!active) return;
     const scene = active.target.dataset.scene;
     document.body.dataset.scene = scene;
+    updateGameContext(scene);
     scenes.forEach((item) => item.classList.toggle("active-scene", item === active.target));
     sceneLinks.forEach((link) => link.classList.toggle("active", link.dataset.nav === scene));
   },
