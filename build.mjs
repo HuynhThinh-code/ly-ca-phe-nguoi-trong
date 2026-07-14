@@ -6,29 +6,22 @@ await mkdir("dist/server", { recursive: true });
 await mkdir("dist/.openai", { recursive: true });
 await cp(".openai/hosting.json", "dist/.openai/hosting.json");
 
-const html = await readFile("public/index.html");
-const css = await readFile("public/styles.css");
-const js = await readFile("public/script.js");
+const html = await readFile("public/index.html", "utf8");
+const css = await readFile("public/styles.css", "utf8");
+const js = await readFile("public/script.js", "utf8");
+const inlineHtml = html
+  .replace('<link rel="stylesheet" href="styles.css" />', `<style>\n${css}\n</style>`)
+  .replace('<script src="script.js"></script>', `<script>\n${js}\n</script>`);
+const body = [...Buffer.from(inlineHtml, "utf8")];
 
-const files = {
-  "/": { body: [...html], type: "text/html; charset=utf-8" },
-  "/index.html": { body: [...html], type: "text/html; charset=utf-8" },
-  "/styles.css": { body: [...css], type: "text/css; charset=utf-8" },
-  "/script.js": { body: [...js], type: "application/javascript; charset=utf-8" },
-};
-
-const worker = `const files = ${JSON.stringify(files)};
+const worker = `const body = ${JSON.stringify(body)};
 
 export default {
-  async fetch(request) {
-    const url = new URL(request.url);
-    const pathname = url.pathname.endsWith("/") && url.pathname !== "/" ? url.pathname.slice(0, -1) : url.pathname;
-    const file = files[pathname] || files["/"];
-
-    return new Response(new Uint8Array(file.body), {
+  async fetch() {
+    return new Response(new Uint8Array(body), {
       headers: {
-        "content-type": file.type,
-        "cache-control": pathname === "/" || pathname === "/index.html" ? "public, max-age=300" : "public, max-age=31536000, immutable",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=60",
       },
     });
   },
