@@ -12,7 +12,7 @@
       name="description"
       content="Web thuyết trình tương tác về quan hệ lợi ích kinh tế trong chuỗi cà phê Việt Nam."
     />
-    <link rel="stylesheet" href="styles.css?v=cup-calculator-20260714-1" />
+    <link rel="stylesheet" href="styles.css?v=interactive-data-20260714-1" />
   </head>
   <body>
     <canvas id="beanCanvas" aria-hidden="true"></canvas>
@@ -131,26 +131,31 @@
             <span>01</span>
             <h3>Nông dân</h3>
             <p>Nguyên liệu ban đầu, đất đai, lao động, thời tiết, sâu bệnh.</p>
+            <div class="value-risk" style="--value: 12%; --risk: 92%"><i></i><b></b></div>
           </article>
           <article>
             <span>02</span>
             <h3>Thương lái</h3>
             <p>Thu gom, phân loại, bảo quản, vận chuyển và chịu biến động giá.</p>
+            <div class="value-risk" style="--value: 24%; --risk: 62%"><i></i><b></b></div>
           </article>
           <article>
             <span>03</span>
             <h3>Rang xay</h3>
             <p>Công nghệ, phối trộn, kiểm soát chất lượng, phát triển sản phẩm.</p>
+            <div class="value-risk" style="--value: 48%; --risk: 46%"><i></i><b></b></div>
           </article>
           <article>
             <span>04</span>
             <h3>Bán lẻ</h3>
             <p>Pha chế, mặt bằng, dịch vụ, thương hiệu và trải nghiệm khách hàng.</p>
+            <div class="value-risk" style="--value: 76%; --risk: 34%"><i></i><b></b></div>
           </article>
           <article>
             <span>05</span>
             <h3>Người tiêu dùng</h3>
             <p>Tạo nhu cầu và chi trả cho chất lượng, dịch vụ, không gian.</p>
+            <div class="value-risk" style="--value: 100%; --risk: 16%"><i></i><b></b></div>
           </article>
         </div>
         <div class="chain-lab reveal" aria-live="polite">
@@ -186,6 +191,22 @@
             <button class="auto-chain-btn" id="chainAuto" type="button">Tự chạy chuỗi</button>
           </div>
         </div>
+        <div class="chain-cost-game reveal">
+          <div>
+            <p class="eyebrow">Gánh chuỗi</p>
+            <h3>Thử cộng các chi phí sau nông trại</h3>
+            <p>Bấm từng khâu để thấy giá trị tăng nhanh vì chế biến, mặt bằng và thương hiệu.</p>
+          </div>
+          <div class="cost-buttons">
+            <button type="button" data-cost="roast">Rang xay</button>
+            <button type="button" data-cost="place">Mặt bằng</button>
+            <button type="button" data-cost="brand">Thương hiệu</button>
+          </div>
+          <div class="cost-meter">
+            <span id="costFill"></span>
+          </div>
+          <strong id="costTotal">40.000đ/kg</strong>
+        </div>
       </section>
 
       <section id="scene-4" class="scene split" data-scene="4">
@@ -209,18 +230,20 @@
                 <span>Giá một ly</span>
                 <strong id="cupPriceValue">85.000đ</strong>
               </span>
-              <input id="cupPrice" type="range" min="45000" max="85000" value="85000" step="5000" />
+              <input id="cupPrice" type="range" min="25000" max="120000" value="85000" step="5000" />
             </label>
             <label>
               <span class="range-head">
                 <span>Gram cà phê rang mỗi ly</span>
                 <strong id="gramsValue">18g</strong>
               </span>
-              <input id="grams" type="range" min="16" max="22" value="18" step="1" />
+              <input id="grams" type="range" min="10" max="25" value="18" step="1" />
             </label>
+            <div class="revenue-bar" id="revenueBar" aria-label="Thanh phân rã doanh thu một ly cà phê"></div>
             <div class="calc-grid">
               <div><small>Số ly ước tính</small><strong id="cupsOut">45</strong></div>
               <div><small>Doanh thu mô phỏng</small><strong id="revenueOut">3,8 triệu</strong></div>
+              <div class="shock-metric"><small>Nông dân nhận / giá ly</small><strong id="farmerShareOut">1,0%</strong></div>
             </div>
             <p class="calc-narrative" id="calcNarrative">
               Với 85.000đ/ly và 18g/ly, 1kg cà phê sau rang pha được khoảng 45 ly, doanh thu mô phỏng khoảng 3,8 triệu.
@@ -277,6 +300,19 @@
             <h3>Mái hợp đồng</h3>
             <p>Hợp đồng giá cố định giúp dự toán chi phí, ổn định nguồn cung và chuyển một phần rủi ro.</p>
           </article>
+        </div>
+        <div class="shock-sim reveal">
+          <button id="shockButton" type="button">Mô phỏng cú sốc giá -30%</button>
+          <div class="shock-actors">
+            <article>
+              <span>Nông dân bán ngay</span>
+              <strong id="farmerShock">40.000đ/kg</strong>
+            </article>
+            <article>
+              <span>Doanh nghiệp có hợp đồng</span>
+              <strong id="firmShock">40.000đ/kg</strong>
+            </article>
+          </div>
         </div>
       </section>
 
@@ -353,6 +389,14 @@
             Liên hệ thực tế: Nghị định 98/2018/NĐ-CP và Luật Hợp tác xã 2023 tạo cơ sở cho
             liên kết sản xuất, tiêu thụ nông sản.
           </p>
+          <div class="coop-sim">
+            <label>
+              <span class="range-head"><span>Số hộ tham gia</span><strong id="coopHouseholds">1 hộ</strong></span>
+              <input id="coopSlider" type="range" min="1" max="1000" value="1" step="1" />
+            </label>
+            <div class="bargain-line"><span id="bargainFill"></span></div>
+            <p id="coopResult">Quyền thương lượng còn yếu, giá bán gần như phụ thuộc người mua.</p>
+          </div>
         </div>
       </section>
 
@@ -361,13 +405,17 @@
           <p class="eyebrow">Cảnh 10</p>
           <h2>Công bằng phải được viết thành điều khoản</h2>
         </div>
-        <div class="contract reveal">
-          <article><h3>Giá thu mua tối thiểu</h3><p>Bù đắp chi phí hợp lý khi thị trường giảm sâu.</p></article>
-          <article><h3>Công thức giá minh bạch</h3><p>Điều chỉnh theo thị trường, chất lượng và chi phí liên quan.</p></article>
-          <article><h3>Thưởng chất lượng</h3><p>Cà phê đạt tiêu chuẩn cao hơn được trả thêm.</p></article>
-          <article><h3>Chia sẻ khi giá tăng</h3><p>Nông dân hưởng một phần lợi ích khi giá bán tăng mạnh.</p></article>
-          <article><h3>Hỗ trợ kỹ thuật</h3><p>Giống, quy trình canh tác, truy xuất nguồn gốc.</p></article>
-          <article><h3>Giải quyết tranh chấp</h3><p>Cơ chế hòa giải và trách nhiệm rõ ràng khi vi phạm.</p></article>
+        <div class="contract reveal" id="contractBuilder">
+          <article><label><input type="checkbox" data-contract="floor" checked /><span><h3>Giá thu mua tối thiểu</h3><p>Bù đắp chi phí hợp lý khi thị trường giảm sâu.</p></span></label></article>
+          <article><label><input type="checkbox" data-contract="formula" checked /><span><h3>Công thức giá minh bạch</h3><p>Điều chỉnh theo thị trường, chất lượng và chi phí liên quan.</p></span></label></article>
+          <article><label><input type="checkbox" data-contract="quality" /><span><h3>Thưởng chất lượng</h3><p>Cà phê đạt tiêu chuẩn cao hơn được trả thêm.</p></span></label></article>
+          <article><label><input type="checkbox" data-contract="share" /><span><h3>Chia sẻ khi giá tăng</h3><p>Nông dân hưởng một phần lợi ích khi giá bán tăng mạnh.</p></span></label></article>
+          <article><label><input type="checkbox" data-contract="support" /><span><h3>Hỗ trợ kỹ thuật</h3><p>Giống, quy trình canh tác, truy xuất nguồn gốc.</p></span></label></article>
+          <article><label><input type="checkbox" data-contract="dispute" /><span><h3>Giải quyết tranh chấp</h3><p>Cơ chế hòa giải và trách nhiệm rõ ràng khi vi phạm.</p></span></label></article>
+          <div class="contract-score">
+            <small>Thu nhập ước tính của nông dân</small>
+            <strong id="contractIncome">42.800đ/kg</strong>
+          </div>
         </div>
       </section>
 
@@ -396,6 +444,6 @@
       <span>Nội dung học tập môn Kinh tế chính trị Mác - Lênin. Giá cả và phép tính chỉ dùng cho mô phỏng tình huống học tập.</span>
     </footer>
 
-    <script src="script.js?v=cup-calculator-20260714-1"></script>
+    <script src="script.js?v=interactive-data-20260714-1"></script>
   </body>
 </html>

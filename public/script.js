@@ -79,6 +79,8 @@ const revenueOut = document.querySelector("#revenueOut");
 const cupPriceValue = document.querySelector("#cupPriceValue");
 const gramsValue = document.querySelector("#gramsValue");
 const calcNarrative = document.querySelector("#calcNarrative");
+const farmerShareOut = document.querySelector("#farmerShareOut");
+const revenueBar = document.querySelector("#revenueBar");
 const cupLayers = {
   service: document.querySelector("#layerService"),
   brand: document.querySelector("#layerBrand"),
@@ -104,25 +106,60 @@ function updateCalculator() {
   const revenue = cups * price;
   const priceScale = (price - Number(cupPrice.min)) / (Number(cupPrice.max) - Number(cupPrice.min));
   const gramScale = (gramValue - Number(grams.min)) / (Number(grams.max) - Number(grams.min));
-  const rawShares = {
-    bean: 10 + gramScale * 8,
-    roast: 16 + gramScale * 3,
-    place: 24 - priceScale * 3,
-    brand: 14 + priceScale * 7,
-    service: 22 + priceScale * 8,
+  const farmerAmount = (gramValue / 0.82 / 1000) * 40000;
+  const remaining = Math.max(0, price - farmerAmount);
+  const weights = {
+    roast: 14 + gramScale * 5,
+    place: 22 - priceScale * 2,
+    labor: 18 + priceScale * 2,
+    brand: 15 + priceScale * 6,
+    profit: 14 + priceScale * 8,
   };
-  const totalShare = Object.values(rawShares).reduce((sum, value) => sum + value, 0);
-  const shares = Object.fromEntries(Object.entries(rawShares).map(([key, value]) => [key, Math.round((value / totalShare) * 100)]));
+  const weightTotal = Object.values(weights).reduce((sum, value) => sum + value, 0);
+  const amounts = {
+    farmer: farmerAmount,
+    roast: (remaining * weights.roast) / weightTotal,
+    place: (remaining * weights.place) / weightTotal,
+    labor: (remaining * weights.labor) / weightTotal,
+    brand: (remaining * weights.brand) / weightTotal,
+    profit: (remaining * weights.profit) / weightTotal,
+  };
+  const segments = [
+    ["Nguyên liệu", "farmer", amounts.farmer, "#3b1a11"],
+    ["Rang xay", "roast", amounts.roast, "#6a341f"],
+    ["Mặt bằng", "place", amounts.place, "#a46a3f"],
+    ["Nhân công", "labor", amounts.labor, "#c98745"],
+    ["Thương hiệu", "brand", amounts.brand, "#d6a256"],
+    ["Lợi nhuận", "profit", amounts.profit, "#f3dca1"],
+  ];
+  const percentOfCup = Object.fromEntries(segments.map(([, key, amount]) => [key, (amount / price) * 100]));
+  const layerShares = {
+    bean: percentOfCup.farmer,
+    roast: percentOfCup.roast,
+    place: percentOfCup.place,
+    brand: percentOfCup.brand,
+    service: percentOfCup.labor + percentOfCup.profit,
+  };
 
   cupPriceValue.textContent = formatCurrency(price);
   gramsValue.textContent = `${gramValue}g`;
   cupsOut.textContent = `${cups} ly`;
   revenueOut.textContent = formatMillion(revenue);
-  calcNarrative.textContent = `Với ${formatCurrency(price)}/ly và ${gramValue}g/ly, 1kg cà phê sau rang pha được khoảng ${cups} ly, doanh thu mô phỏng khoảng ${formatMillion(revenue)}.`;
+  const farmerPercent = (farmerAmount / price) * 100;
+  farmerShareOut.textContent = `${farmerPercent.toLocaleString("vi-VN", { maximumFractionDigits: 1 })}%`;
+  calcNarrative.textContent = `Với ${formatCurrency(price)}/ly và ${gramValue}g/ly, phần nguyên liệu cà phê trong một ly chỉ khoảng ${formatCurrency(Math.round(farmerAmount))}, tương đương ${farmerPercent.toLocaleString("vi-VN", { maximumFractionDigits: 1 })}% giá bán.`;
+
+  revenueBar.innerHTML = segments
+    .map(([label, key, amount, color]) => {
+      const percent = Math.max(0.8, (amount / price) * 100);
+      const amountText = formatCurrency(Math.round(amount));
+      return `<div class="revenue-segment" style="width:${percent}%;background:${color}" title="${label}: ${amountText} (${percent.toLocaleString("vi-VN", { maximumFractionDigits: 1 })}%)"><span>${label}<small>${percent.toLocaleString("vi-VN", { maximumFractionDigits: 1 })}%</small></span></div>`;
+    })
+    .join("");
 
   Object.entries(cupLayers).forEach(([key, layer]) => {
     if (!layer) return;
-    const share = shares[key];
+    const share = Math.round(layerShares[key]);
     layer.style.setProperty("--layer-height", `${Math.max(48, share * 4.7)}px`);
     const output = layer.querySelector("strong");
     if (output) output.textContent = `${share}%`;
@@ -131,6 +168,75 @@ function updateCalculator() {
 
 [cupPrice, grams].forEach((input) => input.addEventListener("input", updateCalculator));
 updateCalculator();
+
+const costButtons = [...document.querySelectorAll("[data-cost]")];
+const costFill = document.querySelector("#costFill");
+const costTotal = document.querySelector("#costTotal");
+const costMap = { roast: 18000, place: 26000, brand: 22000 };
+
+function updateCostGame() {
+  if (!costFill || !costTotal) return;
+  const total = 40000 + costButtons.reduce((sum, button) => sum + (button.classList.contains("active") ? costMap[button.dataset.cost] : 0), 0);
+  costFill.style.width = `${Math.min(100, (total / 106000) * 100)}%`;
+  costTotal.textContent = formatCurrency(total);
+}
+
+costButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    button.classList.toggle("active");
+    updateCostGame();
+  });
+});
+
+updateCostGame();
+
+const shockButton = document.querySelector("#shockButton");
+const shockSim = document.querySelector(".shock-sim");
+const farmerShock = document.querySelector("#farmerShock");
+const firmShock = document.querySelector("#firmShock");
+
+if (shockButton) {
+  shockButton.addEventListener("click", () => {
+    const shocked = !shockSim.classList.contains("shocked");
+    shockSim.classList.toggle("shocked", shocked);
+    farmerShock.textContent = shocked ? "28.000đ/kg" : "40.000đ/kg";
+    firmShock.textContent = shocked ? "40.000đ/kg" : "40.000đ/kg";
+    shockButton.textContent = shocked ? "Khôi phục giá ban đầu" : "Mô phỏng cú sốc giá -30%";
+  });
+}
+
+const coopSlider = document.querySelector("#coopSlider");
+const coopHouseholds = document.querySelector("#coopHouseholds");
+const bargainFill = document.querySelector("#bargainFill");
+const coopResult = document.querySelector("#coopResult");
+
+function updateCoop() {
+  if (!coopSlider) return;
+  const households = Number(coopSlider.value);
+  const power = Math.round((Math.log10(households) / 3) * 100);
+  const bonus = Math.round(power * 85);
+  coopHouseholds.textContent = `${households.toLocaleString("vi-VN")} hộ`;
+  bargainFill.style.width = `${power}%`;
+  coopResult.textContent = `Quyền thương lượng đạt khoảng ${power}%, giá bán giả định có thể tăng thêm khoảng ${bonus.toLocaleString("vi-VN")}đ/kg nhờ gom sản lượng và ký hợp đồng trực tiếp.`;
+}
+
+if (coopSlider) {
+  coopSlider.addEventListener("input", updateCoop);
+  updateCoop();
+}
+
+const contractChecks = [...document.querySelectorAll("[data-contract]")];
+const contractIncome = document.querySelector("#contractIncome");
+const contractBonus = { floor: 1800, formula: 1400, quality: 2200, share: 1800, support: 1200, dispute: 800 };
+
+function updateContractBuilder() {
+  if (!contractIncome) return;
+  const income = contractChecks.reduce((sum, input) => sum + (input.checked ? contractBonus[input.dataset.contract] : 0), 40000);
+  contractIncome.textContent = `${income.toLocaleString("vi-VN")}đ/kg`;
+}
+
+contractChecks.forEach((input) => input.addEventListener("change", updateContractBuilder));
+updateContractBuilder();
 
 const chainItems = [...document.querySelectorAll(".chain > article")];
 const chainRoute = document.querySelector(".chain-lab");
