@@ -12,7 +12,7 @@
       name="description"
       content="Web thuyết trình tương tác về quan hệ lợi ích kinh tế trong chuỗi cà phê Việt Nam."
     />
-    <link rel="stylesheet" href="styles.css?v=rail-dots-20260714-1" />
+    <link rel="stylesheet" href="styles.css?v=plant-stages-20260714-1" />
   </head>
   <body>
     <canvas id="beanCanvas" aria-hidden="true"></canvas>
@@ -91,19 +91,25 @@
           </p>
         </div>
         <div class="timeline reveal">
-          <div class="plant">
+          <div class="plant stage-1" id="coffeePlant" aria-label="Minh họa giai đoạn phát triển của cây cà phê">
+            <span class="soil"></span>
             <span class="stem"></span>
             <span class="leaf l1"></span>
             <span class="leaf l2"></span>
+            <span class="leaf l3"></span>
+            <span class="flower f1"></span>
+            <span class="flower f2"></span>
             <span class="cherry c1"></span>
             <span class="cherry c2"></span>
             <span class="cherry c3"></span>
+            <span class="basket"></span>
+            <span class="price-tag">40.000đ/kg</span>
           </div>
           <ol>
-            <li><span>Đầu vụ</span><p>Giống, phân bón, nước tưới, công chăm sóc.</p></li>
-            <li><span>Giữa vụ</span><p>Mưa, hạn, sâu bệnh và giá vật tư làm chi phí biến động.</p></li>
-            <li><span>Cuối vụ</span><p>Thu hoạch, phơi, bảo quản; thiếu kho dễ phải bán ngay.</p></li>
-            <li><span>Thương lái đến</span><p>Giá đã hình thành, quyền quyết định của nông dân thường thấp.</p></li>
+            <li class="active-stage" data-plant-stage="1" tabindex="0"><span>Đầu vụ</span><p>Giống, phân bón, nước tưới, công chăm sóc.</p></li>
+            <li data-plant-stage="2" tabindex="0"><span>Giữa vụ</span><p>Mưa, hạn, sâu bệnh và giá vật tư làm chi phí biến động.</p></li>
+            <li data-plant-stage="3" tabindex="0"><span>Cuối vụ</span><p>Thu hoạch, phơi, bảo quản; thiếu kho dễ phải bán ngay.</p></li>
+            <li data-plant-stage="4" tabindex="0"><span>Thương lái đến</span><p>Giá đã hình thành, quyền quyết định của nông dân thường thấp.</p></li>
           </ol>
         </div>
       </section>
@@ -378,6 +384,6 @@
       <span>Nội dung học tập môn Kinh tế chính trị Mác - Lênin. Giá cả và phép tính chỉ dùng cho mô phỏng tình huống học tập.</span>
     </footer>
 
-    <script src="script.js?v=chain-lab-20260714-1"></script>
+    <script src="script.js?v=plant-stages-20260714-1"></script>
   </body>
 </html>

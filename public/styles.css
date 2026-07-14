@@ -570,6 +570,8 @@ p {
 .plant {
   position: relative;
   height: 330px;
+  display: block;
+  filter: drop-shadow(0 24px 36px rgba(0, 0, 0, 0.28));
 }
 
 .stem {
@@ -577,15 +579,32 @@ p {
   left: 86px;
   bottom: 0;
   width: 8px;
-  height: 300px;
+  height: var(--stem-height, 116px);
   border-radius: 999px;
   background: linear-gradient(var(--leaf), #416c43);
+  transition: height 500ms cubic-bezier(0.2, 0.9, 0.2, 1), filter 300ms ease;
+}
+
+.soil {
+  position: absolute;
+  left: 28px;
+  right: 16px;
+  bottom: -4px;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(143, 90, 50, 0.76), rgba(59, 26, 17, 0.15) 70%);
 }
 
 .leaf,
-.cherry {
+.cherry,
+.flower,
+.basket,
+.price-tag {
   position: absolute;
   display: block;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 360ms ease, transform 460ms cubic-bezier(0.2, 0.9, 0.2, 1), filter 280ms ease;
 }
 
 .leaf {
@@ -605,6 +624,34 @@ p {
   left: 12px;
   top: 168px;
   transform: rotate(206deg);
+}
+
+.l3 {
+  left: 102px;
+  top: 186px;
+  width: 62px;
+  height: 30px;
+  transform: rotate(-34deg);
+}
+
+.flower {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #fff7d7 0 22%, transparent 23%),
+    conic-gradient(from 10deg, #fff2d6, #f8c86a, #fff2d6, #f8c86a, #fff2d6);
+  box-shadow: 0 0 16px rgba(255, 242, 214, 0.32);
+}
+
+.f1 {
+  left: 70px;
+  top: 122px;
+}
+
+.f2 {
+  left: 126px;
+  top: 160px;
 }
 
 .cherry {
@@ -629,6 +676,113 @@ p {
   top: 212px;
 }
 
+.basket {
+  left: 118px;
+  bottom: 0;
+  width: 62px;
+  height: 44px;
+  border-radius: 8px 8px 18px 18px;
+  background:
+    linear-gradient(90deg, rgba(255, 242, 214, 0.22) 1px, transparent 1px),
+    linear-gradient(#d59b43, #8f5a32);
+  background-size: 10px 100%, auto;
+  border: 2px solid rgba(255, 242, 214, 0.28);
+}
+
+.basket::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: -16px;
+  height: 24px;
+  border: 4px solid #d59b43;
+  border-bottom: 0;
+  border-radius: 999px 999px 0 0;
+}
+
+.price-tag {
+  right: -4px;
+  top: 38px;
+  padding: 9px 11px;
+  color: #160d09;
+  border-radius: 7px;
+  background: var(--gold);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+  font-size: 0.76rem;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.plant.stage-1 {
+  --stem-height: 116px;
+}
+
+.plant.stage-2 {
+  --stem-height: 230px;
+}
+
+.plant.stage-3,
+.plant.stage-4 {
+  --stem-height: 300px;
+}
+
+.plant.stage-1 .l2 {
+  opacity: 1;
+  transform: rotate(206deg) scale(0.7);
+}
+
+.plant.stage-2 .leaf,
+.plant.stage-3 .leaf,
+.plant.stage-4 .leaf {
+  opacity: 1;
+}
+
+.plant.stage-2 .l1,
+.plant.stage-3 .l1,
+.plant.stage-4 .l1 {
+  transform: rotate(-18deg) scale(1);
+}
+
+.plant.stage-2 .l2,
+.plant.stage-3 .l2,
+.plant.stage-4 .l2 {
+  transform: rotate(206deg) scale(1);
+}
+
+.plant.stage-2 .l3,
+.plant.stage-3 .l3,
+.plant.stage-4 .l3 {
+  transform: rotate(-34deg) scale(1);
+}
+
+.plant.stage-2 .flower {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.plant.stage-3 .cherry,
+.plant.stage-4 .cherry {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.plant.stage-3 .basket,
+.plant.stage-4 .basket {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.plant.stage-4 .price-tag {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.plant.stage-4 .stem,
+.plant.stage-4 .leaf {
+  filter: saturate(0.82);
+}
+
 .timeline ol {
   margin: 0;
   padding: 0;
@@ -638,10 +792,21 @@ p {
 }
 
 .timeline li {
+  cursor: pointer;
   padding: 16px;
   border-left: 3px solid var(--copper);
   background: rgba(255, 242, 214, 0.07);
   border-radius: 0 var(--radius) var(--radius) 0;
+  transition: transform 220ms ease, background 220ms ease, border-color 220ms ease;
+}
+
+.timeline li:hover,
+.timeline li:focus-visible,
+.timeline li.active-stage {
+  transform: translateX(8px);
+  border-color: var(--gold);
+  background: rgba(255, 242, 214, 0.12);
+  outline: none;
 }
 
 .timeline span,

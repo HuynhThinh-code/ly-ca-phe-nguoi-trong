@@ -47,6 +47,31 @@ function updateProgress() {
 window.addEventListener("scroll", updateProgress, { passive: true });
 updateProgress();
 
+const coffeePlant = document.querySelector("#coffeePlant");
+const plantStages = [...document.querySelectorAll("[data-plant-stage]")];
+
+function setPlantStage(stage) {
+  if (!coffeePlant) return;
+  coffeePlant.className = `plant stage-${stage}`;
+  plantStages.forEach((item) => {
+    const isActive = item.dataset.plantStage === String(stage);
+    item.classList.toggle("active-stage", isActive);
+    item.setAttribute("aria-pressed", isActive ? "true" : "false");
+  });
+}
+
+plantStages.forEach((item) => {
+  item.setAttribute("role", "button");
+  item.setAttribute("aria-pressed", item.classList.contains("active-stage") ? "true" : "false");
+  item.addEventListener("click", () => setPlantStage(item.dataset.plantStage));
+  item.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      setPlantStage(item.dataset.plantStage);
+    }
+  });
+});
+
 const cupPrice = document.querySelector("#cupPrice");
 const grams = document.querySelector("#grams");
 const cupsOut = document.querySelector("#cupsOut");
