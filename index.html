@@ -12,7 +12,7 @@
       name="description"
       content="Web thuyết trình tương tác về quan hệ lợi ích kinh tế trong chuỗi cà phê Việt Nam."
     />
-    <link rel="stylesheet" href="styles.css?v=interactive-data-20260714-1" />
+    <link rel="stylesheet" href="styles.css?v=review-fixes-20260714-1" />
   </head>
   <body>
     <canvas id="beanCanvas" aria-hidden="true"></canvas>
@@ -33,17 +33,17 @@
     </header>
 
     <aside class="scene-rail" aria-label="Danh sách cảnh">
-      <a href="#scene-1" data-nav="1">01</a>
-      <a href="#scene-2" data-nav="2">02</a>
-      <a href="#scene-3" data-nav="3">03</a>
-      <a href="#scene-4" data-nav="4">04</a>
-      <a href="#scene-5" data-nav="5">05</a>
-      <a href="#scene-6" data-nav="6">06</a>
-      <a href="#scene-7" data-nav="7">07</a>
-      <a href="#scene-8" data-nav="8">08</a>
-      <a href="#scene-9" data-nav="9">09</a>
-      <a href="#scene-10" data-nav="10">10</a>
-      <a href="#scene-11" data-nav="11">11</a>
+      <a href="#scene-1" data-nav="1" data-label="Cảnh 1 · Mở đầu">01</a>
+      <a href="#scene-2" data-nav="2" data-label="Cảnh 2 · Một năm lao động">02</a>
+      <a href="#scene-3" data-nav="3" data-label="Cảnh 3 · Chuỗi giá trị">03</a>
+      <a href="#scene-4" data-nav="4" data-label="Cảnh 4 · 85.000đ chia thế nào">04</a>
+      <a href="#scene-5" data-nav="5" data-label="Cảnh 5 · Mâu thuẫn lợi ích">05</a>
+      <a href="#scene-6" data-nav="6" data-label="Cảnh 6 · Cú sốc giá">06</a>
+      <a href="#scene-7" data-nav="7" data-label="Cảnh 7 · Vai trò Nhà nước">07</a>
+      <a href="#scene-8" data-nav="8" data-label="Cảnh 8 · Bốn vai trò">08</a>
+      <a href="#scene-9" data-nav="9" data-label="Cảnh 9 · Hợp tác xã">09</a>
+      <a href="#scene-10" data-nav="10" data-label="Cảnh 10 · Hợp đồng công bằng">10</a>
+      <a href="#scene-11" data-nav="11" data-label="Cảnh 11 · Kết luận">11</a>
     </aside>
 
     <main>
@@ -211,11 +211,12 @@
 
       <section id="scene-4" class="scene split" data-scene="4">
         <div class="cup-anatomy reveal" aria-label="Giải phẫu một ly cà phê">
-          <div class="layer l-service" id="layerService"><span>Dịch vụ</span><strong>28%</strong></div>
+          <div class="layer l-profit" id="layerProfit"><span>Lợi nhuận</span><strong>20%</strong></div>
           <div class="layer l-brand" id="layerBrand"><span>Thương hiệu</span><strong>20%</strong></div>
+          <div class="layer l-labor" id="layerLabor"><span>Nhân công</span><strong>20%</strong></div>
           <div class="layer l-place" id="layerPlace"><span>Mặt bằng</span><strong>22%</strong></div>
           <div class="layer l-roast" id="layerRoast"><span>Rang xay</span><strong>17%</strong></div>
-          <div class="layer l-bean" id="layerBean"><span>Nguyên liệu</span><strong>13%</strong></div>
+          <div class="layer l-bean" id="layerBean"><span>Nguyên liệu</span><strong>1%</strong></div>
         </div>
         <div class="section-copy reveal">
           <p class="eyebrow">Cảnh 4</p>
@@ -302,17 +303,18 @@
           </article>
         </div>
         <div class="shock-sim reveal">
-          <button id="shockButton" type="button">Mô phỏng cú sốc giá -30%</button>
+          <button id="shockButton" type="button">Kích hoạt cú sốc giá -30%</button>
           <div class="shock-actors">
             <article>
               <span>Nông dân bán ngay</span>
-              <strong id="farmerShock">40.000đ/kg</strong>
+              <strong id="farmerShock">32.000đ/kg</strong>
             </article>
             <article>
               <span>Doanh nghiệp có hợp đồng</span>
-              <strong id="firmShock">40.000đ/kg</strong>
+              <strong id="firmShock">45.000đ/kg</strong>
             </article>
           </div>
+          <div class="shock-line" aria-hidden="true"><span></span></div>
         </div>
       </section>
 
@@ -391,8 +393,8 @@
           </p>
           <div class="coop-sim">
             <label>
-              <span class="range-head"><span>Số hộ tham gia</span><strong id="coopHouseholds">1 hộ</strong></span>
-              <input id="coopSlider" type="range" min="1" max="1000" value="1" step="1" />
+              <span class="range-head"><span>Số hộ tham gia</span><strong id="coopHouseholds">120 hộ</strong></span>
+              <input id="coopSlider" type="range" min="1" max="1000" value="120" step="1" />
             </label>
             <div class="bargain-line"><span id="bargainFill"></span></div>
             <p id="coopResult">Quyền thương lượng còn yếu, giá bán gần như phụ thuộc người mua.</p>
@@ -444,6 +446,6 @@
       <span>Nội dung học tập môn Kinh tế chính trị Mác - Lênin. Giá cả và phép tính chỉ dùng cho mô phỏng tình huống học tập.</span>
     </footer>
 
-    <script src="script.js?v=interactive-data-20260714-1"></script>
+    <script src="script.js?v=review-fixes-20260714-1"></script>
   </body>
 </html>

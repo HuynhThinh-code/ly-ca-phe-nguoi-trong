@@ -3,6 +3,15 @@ const sceneLinks = [...document.querySelectorAll("[data-nav]")];
 const scenes = [...document.querySelectorAll(".scene")];
 const revealEls = [...document.querySelectorAll(".reveal")];
 
+document.querySelectorAll(".scene h2").forEach((heading) => {
+  const text = heading.textContent.trim();
+  if (!text || heading.querySelector(".kinetic-word")) return;
+  heading.innerHTML = text
+    .split(/\s+/)
+    .map((word, index) => `<span class="kinetic-word" style="transition-delay:${index * 42}ms">${word}</span>`)
+    .join(" ");
+});
+
 scenes.forEach((scene) => {
   [...scene.querySelectorAll(".reveal")].forEach((el, index) => {
     el.style.transitionDelay = `${Math.min(index * 90, 270)}ms`;
@@ -82,8 +91,9 @@ const calcNarrative = document.querySelector("#calcNarrative");
 const farmerShareOut = document.querySelector("#farmerShareOut");
 const revenueBar = document.querySelector("#revenueBar");
 const cupLayers = {
-  service: document.querySelector("#layerService"),
+  profit: document.querySelector("#layerProfit"),
   brand: document.querySelector("#layerBrand"),
+  labor: document.querySelector("#layerLabor"),
   place: document.querySelector("#layerPlace"),
   roast: document.querySelector("#layerRoast"),
   bean: document.querySelector("#layerBean"),
@@ -137,8 +147,9 @@ function updateCalculator() {
     bean: percentOfCup.farmer,
     roast: percentOfCup.roast,
     place: percentOfCup.place,
+    labor: percentOfCup.labor,
     brand: percentOfCup.brand,
-    service: percentOfCup.labor + percentOfCup.profit,
+    profit: percentOfCup.profit,
   };
 
   cupPriceValue.textContent = formatCurrency(price);
@@ -153,7 +164,7 @@ function updateCalculator() {
     .map(([label, key, amount, color]) => {
       const percent = Math.max(0.8, (amount / price) * 100);
       const amountText = formatCurrency(Math.round(amount));
-      return `<div class="revenue-segment" style="width:${percent}%;background:${color}" title="${label}: ${amountText} (${percent.toLocaleString("vi-VN", { maximumFractionDigits: 1 })}%)"><span>${label}<small>${percent.toLocaleString("vi-VN", { maximumFractionDigits: 1 })}%</small></span></div>`;
+      return `<div class="revenue-segment segment-${key}" style="width:${percent}%;background:${color}" title="${label}: ${amountText} (${percent.toLocaleString("vi-VN", { maximumFractionDigits: 1 })}%)"><span>${label}<small>${percent.toLocaleString("vi-VN", { maximumFractionDigits: 1 })}%</small></span></div>`;
     })
     .join("");
 
@@ -199,9 +210,9 @@ if (shockButton) {
   shockButton.addEventListener("click", () => {
     const shocked = !shockSim.classList.contains("shocked");
     shockSim.classList.toggle("shocked", shocked);
-    farmerShock.textContent = shocked ? "28.000đ/kg" : "40.000đ/kg";
-    firmShock.textContent = shocked ? "40.000đ/kg" : "40.000đ/kg";
-    shockButton.textContent = shocked ? "Khôi phục giá ban đầu" : "Mô phỏng cú sốc giá -30%";
+    farmerShock.textContent = shocked ? "28.000đ/kg" : "32.000đ/kg";
+    firmShock.textContent = shocked ? "45.000đ/kg" : "45.000đ/kg";
+    shockButton.textContent = shocked ? "Khôi phục mô phỏng" : "Kích hoạt cú sốc giá -30%";
   });
 }
 
