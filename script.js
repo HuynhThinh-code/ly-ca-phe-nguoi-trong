@@ -76,6 +76,20 @@ const cupPrice = document.querySelector("#cupPrice");
 const grams = document.querySelector("#grams");
 const cupsOut = document.querySelector("#cupsOut");
 const revenueOut = document.querySelector("#revenueOut");
+const cupPriceValue = document.querySelector("#cupPriceValue");
+const gramsValue = document.querySelector("#gramsValue");
+const calcNarrative = document.querySelector("#calcNarrative");
+const cupLayers = {
+  service: document.querySelector("#layerService"),
+  brand: document.querySelector("#layerBrand"),
+  place: document.querySelector("#layerPlace"),
+  roast: document.querySelector("#layerRoast"),
+  bean: document.querySelector("#layerBean"),
+};
+
+function formatCurrency(value) {
+  return `${value.toLocaleString("vi-VN")}đ`;
+}
 
 function formatMillion(value) {
   const million = value / 1_000_000;
@@ -83,11 +97,36 @@ function formatMillion(value) {
 }
 
 function updateCalculator() {
+  const price = Number(cupPrice.value);
+  const gramValue = Number(grams.value);
   const roastedGrams = 1000 * 0.82;
-  const cups = Math.floor(roastedGrams / Number(grams.value));
-  const revenue = cups * Number(cupPrice.value);
+  const cups = Math.floor(roastedGrams / gramValue);
+  const revenue = cups * price;
+  const priceScale = (price - Number(cupPrice.min)) / (Number(cupPrice.max) - Number(cupPrice.min));
+  const gramScale = (gramValue - Number(grams.min)) / (Number(grams.max) - Number(grams.min));
+  const rawShares = {
+    bean: 10 + gramScale * 8,
+    roast: 16 + gramScale * 3,
+    place: 24 - priceScale * 3,
+    brand: 14 + priceScale * 7,
+    service: 22 + priceScale * 8,
+  };
+  const totalShare = Object.values(rawShares).reduce((sum, value) => sum + value, 0);
+  const shares = Object.fromEntries(Object.entries(rawShares).map(([key, value]) => [key, Math.round((value / totalShare) * 100)]));
+
+  cupPriceValue.textContent = formatCurrency(price);
+  gramsValue.textContent = `${gramValue}g`;
   cupsOut.textContent = `${cups} ly`;
   revenueOut.textContent = formatMillion(revenue);
+  calcNarrative.textContent = `Với ${formatCurrency(price)}/ly và ${gramValue}g/ly, 1kg cà phê sau rang pha được khoảng ${cups} ly, doanh thu mô phỏng khoảng ${formatMillion(revenue)}.`;
+
+  Object.entries(cupLayers).forEach(([key, layer]) => {
+    if (!layer) return;
+    const share = shares[key];
+    layer.style.setProperty("--layer-height", `${Math.max(48, share * 4.7)}px`);
+    const output = layer.querySelector("strong");
+    if (output) output.textContent = `${share}%`;
+  });
 }
 
 [cupPrice, grams].forEach((input) => input.addEventListener("input", updateCalculator));

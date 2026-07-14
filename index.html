@@ -12,7 +12,7 @@
       name="description"
       content="Web thuyết trình tương tác về quan hệ lợi ích kinh tế trong chuỗi cà phê Việt Nam."
     />
-    <link rel="stylesheet" href="styles.css?v=trader-stage-20260714-1" />
+    <link rel="stylesheet" href="styles.css?v=cup-calculator-20260714-1" />
   </head>
   <body>
     <canvas id="beanCanvas" aria-hidden="true"></canvas>
@@ -190,11 +190,11 @@
 
       <section id="scene-4" class="scene split" data-scene="4">
         <div class="cup-anatomy reveal" aria-label="Giải phẫu một ly cà phê">
-          <div class="layer l-service">Dịch vụ</div>
-          <div class="layer l-brand">Thương hiệu</div>
-          <div class="layer l-place">Mặt bằng</div>
-          <div class="layer l-roast">Rang xay</div>
-          <div class="layer l-bean">Nguyên liệu</div>
+          <div class="layer l-service" id="layerService"><span>Dịch vụ</span><strong>28%</strong></div>
+          <div class="layer l-brand" id="layerBrand"><span>Thương hiệu</span><strong>20%</strong></div>
+          <div class="layer l-place" id="layerPlace"><span>Mặt bằng</span><strong>22%</strong></div>
+          <div class="layer l-roast" id="layerRoast"><span>Rang xay</span><strong>17%</strong></div>
+          <div class="layer l-bean" id="layerBean"><span>Nguyên liệu</span><strong>13%</strong></div>
         </div>
         <div class="section-copy reveal">
           <p class="eyebrow">Cảnh 4</p>
@@ -205,17 +205,26 @@
           </p>
           <div class="calculator" aria-label="Mô phỏng doanh thu từ một ký cà phê">
             <label>
-              Giá một ly
+              <span class="range-head">
+                <span>Giá một ly</span>
+                <strong id="cupPriceValue">85.000đ</strong>
+              </span>
               <input id="cupPrice" type="range" min="45000" max="85000" value="85000" step="5000" />
             </label>
             <label>
-              Gram cà phê rang mỗi ly
+              <span class="range-head">
+                <span>Gram cà phê rang mỗi ly</span>
+                <strong id="gramsValue">18g</strong>
+              </span>
               <input id="grams" type="range" min="16" max="22" value="18" step="1" />
             </label>
             <div class="calc-grid">
               <div><small>Số ly ước tính</small><strong id="cupsOut">45</strong></div>
               <div><small>Doanh thu mô phỏng</small><strong id="revenueOut">3,8 triệu</strong></div>
             </div>
+            <p class="calc-narrative" id="calcNarrative">
+              Với 85.000đ/ly và 18g/ly, 1kg cà phê sau rang pha được khoảng 45 ly, doanh thu mô phỏng khoảng 3,8 triệu.
+            </p>
             <p class="fineprint">Mô phỏng học tập: 1kg cà phê nhân sau rang còn khoảng 82% khối lượng.</p>
           </div>
         </div>
@@ -387,6 +396,6 @@
       <span>Nội dung học tập môn Kinh tế chính trị Mác - Lênin. Giá cả và phép tính chỉ dùng cho mô phỏng tình huống học tập.</span>
     </footer>
 
-    <script src="script.js?v=trader-stage-20260714-1"></script>
+    <script src="script.js?v=cup-calculator-20260714-1"></script>
   </body>
 </html>
