@@ -599,6 +599,9 @@ p {
 .cherry,
 .flower,
 .basket,
+.sack,
+.trader,
+.buy-arrow,
 .price-tag {
   position: absolute;
   display: block;
@@ -702,16 +705,93 @@ p {
 }
 
 .price-tag {
-  right: -4px;
-  top: 38px;
-  padding: 9px 11px;
+  right: -22px;
+  top: 26px;
+  padding: 10px 12px;
   color: #160d09;
   border-radius: 7px;
   background: var(--gold);
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
   font-size: 0.76rem;
   font-weight: 950;
+  line-height: 1.28;
   white-space: nowrap;
+}
+
+.sack {
+  right: 18px;
+  bottom: 4px;
+  width: 48px;
+  height: 58px;
+  border-radius: 12px 12px 16px 16px;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 242, 214, 0.34), transparent 20%),
+    linear-gradient(145deg, #d7b37a, #8f5a32);
+  border: 2px solid rgba(255, 242, 214, 0.22);
+}
+
+.sack::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: -5px;
+  height: 10px;
+  border-radius: 999px;
+  background: #6f4226;
+}
+
+.trader {
+  right: 8px;
+  top: 122px;
+  width: 54px;
+  height: 86px;
+}
+
+.trader::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 28%, #ffe4bd, #b76f43 72%);
+  box-shadow: 0 0 0 5px rgba(244, 203, 115, 0.18);
+}
+
+.trader::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 0;
+  height: 54px;
+  border-radius: 16px 16px 8px 8px;
+  background:
+    linear-gradient(90deg, transparent 45%, rgba(255, 242, 214, 0.22) 46% 54%, transparent 55%),
+    linear-gradient(145deg, #3f2b21, #d59b43);
+}
+
+.buy-arrow {
+  right: 68px;
+  top: 154px;
+  width: 58px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(244, 203, 115, 0.2), var(--gold));
+}
+
+.buy-arrow::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-top: 3px solid var(--gold);
+  border-right: 3px solid var(--gold);
+  transform: translateY(-50%) rotate(45deg);
 }
 
 .plant.stage-1 {
@@ -773,7 +853,10 @@ p {
   transform: scale(1);
 }
 
-.plant.stage-4 .price-tag {
+.plant.stage-4 .price-tag,
+.plant.stage-4 .sack,
+.plant.stage-4 .trader,
+.plant.stage-4 .buy-arrow {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
