@@ -2,6 +2,23 @@ const progressBar = document.querySelector("#progressBar");
 const sceneLinks = [...document.querySelectorAll("[data-nav]")];
 const scenes = [...document.querySelectorAll(".scene")];
 const revealEls = [...document.querySelectorAll(".reveal")];
+const topbar = document.querySelector("#topbar");
+const topbarToggle = document.querySelector("#topbarToggle");
+
+function setTopbar(open) {
+  if (!topbar || !topbarToggle) return;
+  topbar.classList.toggle("is-open", open);
+  topbarToggle.classList.toggle("is-open", open);
+  topbarToggle.setAttribute("aria-expanded", String(open));
+  topbarToggle.setAttribute("aria-label", open ? "Ẩn thanh điều hướng" : "Mở thanh điều hướng");
+}
+
+topbarToggle?.addEventListener("click", () => setTopbar(!topbar?.classList.contains("is-open")));
+topbar?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setTopbar(false)));
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") setTopbar(false);
+});
+setTopbar(false);
 
 sceneLinks.forEach((link) => {
   link.title = link.dataset.label || `Cảnh ${link.dataset.nav}`;
@@ -333,6 +350,10 @@ const policyTitle = document.querySelector("#policyTitle");
 const policyText = document.querySelector("#policyText");
 const policyBefore = document.querySelector("#policyBefore");
 const policyAfter = document.querySelector("#policyAfter");
+const policyBeforeValue = document.querySelector("#policyBeforeValue");
+const policyAfterValue = document.querySelector("#policyAfterValue");
+const policyEffect = document.querySelector(".policy-effect");
+const stateHand = document.querySelector("#stateHand");
 const policyData = {
   law: ["Pháp luật", "Bảo vệ hợp đồng, cân đo và chỉ dẫn nguồn gốc làm giảm rủi ro bị ép điều kiện giao dịch.", 34, 54],
   economic: ["Chính sách kinh tế", "Giá sàn, tín dụng và hỗ trợ liên kết giúp nông dân có thêm thời gian và vị thế khi bán.", 32, 58],
@@ -349,6 +370,15 @@ function setPolicy(key) {
   policyText.textContent = item[1];
   policyBefore.style.width = `${item[2]}%`;
   policyAfter.style.width = `${item[3]}%`;
+  if (policyBeforeValue) policyBeforeValue.textContent = `${item[2]}%`;
+  if (policyAfterValue) policyAfterValue.textContent = `${item[3]}%`;
+  stateHand?.setAttribute("data-policy", key);
+  policyEffect?.classList.remove("is-changing");
+  stateHand?.classList.remove("is-changing");
+  requestAnimationFrame(() => {
+    policyEffect?.classList.add("is-changing");
+    stateHand?.classList.add("is-changing");
+  });
 }
 
 policyButtons.forEach((button) => button.addEventListener("click", () => setPolicy(button.dataset.policy)));

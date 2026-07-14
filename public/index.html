@@ -12,14 +12,16 @@
       name="description"
       content="Web thuyết trình tương tác về quan hệ lợi ích kinh tế trong chuỗi cà phê Việt Nam."
     />
-    <link rel="stylesheet" href="styles.css?v=critical-polish-20260714-1" />
+    <link rel="stylesheet" href="styles.css?v=presentation-nav-policy-20260714-1" />
   </head>
   <body>
     <canvas id="beanCanvas" aria-hidden="true"></canvas>
     <div class="grain" aria-hidden="true"></div>
     <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
 
-    <header class="topbar">
+    <button class="topbar-toggle" id="topbarToggle" type="button" aria-label="Mở thanh điều hướng" aria-expanded="false"></button>
+
+    <header class="topbar" id="topbar">
       <a class="brand" href="#scene-1" aria-label="Về đầu trang">
         <span class="brand-mark"></span>
         <span>Fair Bean Chain</span>
@@ -342,7 +344,7 @@
       </section>
 
       <section id="scene-7" class="scene split policy" data-scene="7">
-        <div class="state-hand reveal" aria-hidden="true">
+        <div class="state-hand reveal" id="stateHand" aria-hidden="true">
           <span>Nhà nước</span>
         </div>
         <div class="section-copy reveal">
@@ -362,7 +364,11 @@
           <div class="policy-effect">
             <small id="policyTitle">Chọn một công cụ</small>
             <p id="policyText">Bấm từng công cụ để xem nó làm quan hệ lợi ích bớt lệch như thế nào.</p>
-            <div><span id="policyBefore"></span><span id="policyAfter"></span></div>
+            <div class="policy-impact" aria-hidden="true">
+              <article><span>Trước</span><strong id="policyBeforeValue">34%</strong></article>
+              <article><span>Sau can thiệp</span><strong id="policyAfterValue">54%</strong></article>
+            </div>
+            <div class="policy-meter" aria-hidden="true"><span id="policyBefore"></span><span id="policyAfter"></span></div>
           </div>
         </div>
       </section>
@@ -477,6 +483,6 @@
       <span>Nội dung học tập môn Kinh tế chính trị Mác - Lênin. Giá cả và phép tính chỉ dùng cho mô phỏng tình huống học tập.</span>
     </footer>
 
-    <script src="script.js?v=critical-polish-20260714-1"></script>
+    <script src="script.js?v=presentation-nav-policy-20260714-1"></script>
   </body>
 </html>
