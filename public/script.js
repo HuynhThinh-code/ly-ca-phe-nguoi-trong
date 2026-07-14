@@ -3,6 +3,10 @@ const sceneLinks = [...document.querySelectorAll("[data-nav]")];
 const scenes = [...document.querySelectorAll(".scene")];
 const revealEls = [...document.querySelectorAll(".reveal")];
 
+sceneLinks.forEach((link) => {
+  link.title = link.dataset.label || `Cảnh ${link.dataset.nav}`;
+});
+
 document.querySelectorAll(".scene h2").forEach((heading) => {
   const text = heading.textContent.trim();
   if (!text || heading.querySelector(".kinetic-word")) return;
@@ -186,22 +190,17 @@ function updateCalculator() {
     profit: (remaining * weights.profit) / weightTotal,
   };
   const segments = [
-    ["Nguyên liệu", "farmer", amounts.farmer, "#3b1a11"],
-    ["Rang xay", "roast", amounts.roast, "#6a341f"],
-    ["Mặt bằng", "place", amounts.place, "#a46a3f"],
-    ["Nhân công", "labor", amounts.labor, "#c98745"],
-    ["Thương hiệu", "brand", amounts.brand, "#d6a256"],
-    ["Lợi nhuận", "profit", amounts.profit, "#f3dca1"],
-  ];
-  const percentOfCup = Object.fromEntries(segments.map(([, key, amount]) => [key, (amount / price) * 100]));
-  const layerShares = {
-    bean: percentOfCup.farmer,
-    roast: percentOfCup.roast,
-    place: percentOfCup.place,
-    labor: percentOfCup.labor,
-    brand: percentOfCup.brand,
-    profit: percentOfCup.profit,
-  };
+    { label: "Nguyên liệu", key: "farmer", layer: "bean", amount: amounts.farmer, color: "#3b1a11" },
+    { label: "Rang xay", key: "roast", layer: "roast", amount: amounts.roast, color: "#6a341f" },
+    { label: "Mặt bằng", key: "place", layer: "place", amount: amounts.place, color: "#a46a3f" },
+    { label: "Nhân công", key: "labor", layer: "labor", amount: amounts.labor, color: "#c98745" },
+    { label: "Thương hiệu", key: "brand", layer: "brand", amount: amounts.brand, color: "#d6a256" },
+    { label: "Lợi nhuận", key: "profit", layer: "profit", amount: amounts.profit, color: "#f3dca1" },
+  ].map((segment) => ({
+    ...segment,
+    percent: (segment.amount / price) * 100,
+    displayPercent: (segment.amount / price) * 100,
+  }));
 
   cupPriceValue.textContent = formatCurrency(price);
   gramsValue.textContent = `${gramValue}g`;
@@ -212,19 +211,21 @@ function updateCalculator() {
   calcNarrative.textContent = `Với ${formatCurrency(price)}/ly và ${gramValue}g/ly, phần nguyên liệu cà phê trong một ly chỉ khoảng ${formatCurrency(Math.round(farmerAmount))}, tương đương ${farmerPercent.toLocaleString("vi-VN", { maximumFractionDigits: 1 })}% giá bán.`;
 
   revenueBar.innerHTML = segments
-    .map(([label, key, amount, color]) => {
-      const percent = Math.max(0.8, (amount / price) * 100);
-      const amountText = formatCurrency(Math.round(amount));
-      return `<div class="revenue-segment segment-${key}" style="width:${percent}%;background:${color}" title="${label}: ${amountText} (${percent.toLocaleString("vi-VN", { maximumFractionDigits: 1 })}%)"><span>${label}<small>${percent.toLocaleString("vi-VN", { maximumFractionDigits: 1 })}%</small></span></div>`;
+    .map((segment) => {
+      const visualPercent = Math.max(1.2, segment.percent);
+      const percentText = segment.displayPercent.toLocaleString("vi-VN", { maximumFractionDigits: 1 });
+      const amountText = formatCurrency(Math.round(segment.amount));
+      return `<div class="revenue-segment segment-${segment.key}" style="width:${visualPercent}%;background:${segment.color}" title="${segment.label}: ${amountText} (${percentText}%)"><span>${segment.label}<small>${percentText}%</small></span></div>`;
     })
     .join("");
 
-  Object.entries(cupLayers).forEach(([key, layer]) => {
+  segments.forEach((segment) => {
+    const layer = cupLayers[segment.layer];
     if (!layer) return;
-    const share = Math.round(layerShares[key]);
-    layer.style.setProperty("--layer-height", `${Math.max(48, share * 4.7)}px`);
+    const percentText = segment.displayPercent.toLocaleString("vi-VN", { maximumFractionDigits: 1 });
+    layer.style.setProperty("--layer-height", `${Math.max(48, segment.percent * 4.7)}px`);
     const output = layer.querySelector("strong");
-    if (output) output.textContent = `${share}%`;
+    if (output) output.textContent = `${percentText}%`;
   });
 }
 
@@ -241,6 +242,8 @@ function updateCostGame() {
   const total = 40000 + costButtons.reduce((sum, button) => sum + (button.classList.contains("active") ? costMap[button.dataset.cost] : 0), 0);
   costFill.style.width = `${Math.min(100, (total / 106000) * 100)}%`;
   costTotal.textContent = formatCurrency(total);
+  costTotal.classList.remove("pulse-value");
+  requestAnimationFrame(() => costTotal.classList.add("pulse-value"));
 }
 
 costButtons.forEach((button) => {
@@ -276,7 +279,12 @@ function updateCoop() {
   if (!coopSlider) return;
   const households = Number(coopSlider.value);
   const power = Math.round((Math.log10(households) / 3) * 100);
-  const bonus = Math.round(power * 85);
+  const bonus =
+    households <= 100
+      ? Math.round((households / 100) * 3000)
+      : households <= 500
+        ? Math.round(3000 + ((households - 100) / 400) * 5000)
+        : Math.round(8000 + ((households - 500) / 500) * 4000);
   coopHouseholds.textContent = `${households.toLocaleString("vi-VN")} hộ`;
   bargainFill.style.width = `${power}%`;
   coopResult.textContent = `Quyền thương lượng đạt khoảng ${power}%, giá bán giả định có thể tăng thêm khoảng ${bonus.toLocaleString("vi-VN")}đ/kg nhờ gom sản lượng và ký hợp đồng trực tiếp.`;
@@ -370,13 +378,23 @@ const commitmentResult = document.querySelector("#commitmentResult");
 function updateCommitment() {
   if (!commitmentResult) return;
   const count = commitmentChecks.filter((input) => input.checked).length;
+  document.querySelector(".commitment-box")?.classList.toggle("complete", count === commitmentChecks.length);
   commitmentResult.textContent =
     count === commitmentChecks.length
-      ? "Bạn đã khép vòng lợi ích: tiêu dùng có trách nhiệm cũng là một phần của chuỗi công bằng."
+      ? "Bạn đã khép vòng lợi ích: tiêu dùng có trách nhiệm cũng là một phần của chuỗi công bằng. Sao chép liên kết chia sẻ"
       : `Đã chọn ${count}/3 cam kết.`;
 }
 
 commitmentChecks.forEach((input) => input.addEventListener("change", updateCommitment));
+commitmentResult?.addEventListener("click", async () => {
+  if (!document.querySelector(".commitment-box")?.classList.contains("complete")) return;
+  try {
+    await navigator.clipboard.writeText(window.location.href.split("#")[0]);
+    commitmentResult.textContent = "Đã sao chép liên kết chia sẻ.";
+  } catch {
+    commitmentResult.textContent = "Bạn đã hoàn tất cam kết. Có thể copy link trên thanh địa chỉ để chia sẻ.";
+  }
+});
 updateCommitment();
 
 const chainItems = [...document.querySelectorAll(".chain > article")];
