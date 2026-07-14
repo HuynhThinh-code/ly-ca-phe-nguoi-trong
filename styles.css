@@ -208,8 +208,10 @@ input {
   z-index: 14;
   transform: translateY(-50%);
   display: grid;
-  gap: 6px;
-  padding: 8px;
+  justify-items: center;
+  gap: 10px;
+  width: 50px;
+  padding: 10px 8px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: rgba(16, 9, 6, 0.62);
@@ -217,20 +219,50 @@ input {
 }
 
 .scene-rail a {
-  width: 28px;
-  height: 24px;
+  width: 9px;
+  height: 9px;
   display: grid;
   place-items: center;
-  color: rgba(255, 242, 214, 0.54);
-  border-radius: 6px;
+  color: transparent;
+  border: 1px solid rgba(255, 242, 214, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 242, 214, 0.42);
   text-decoration: none;
-  font-size: 0.72rem;
+  font-size: 0;
   font-weight: 800;
+  line-height: 1;
+  transition:
+    width 220ms ease,
+    height 220ms ease,
+    color 180ms ease,
+    background 220ms ease,
+    border-color 220ms ease,
+    border-radius 220ms ease,
+    transform 220ms ease;
+}
+
+.scene-rail a:hover,
+.scene-rail a:focus-visible {
+  width: 32px;
+  height: 28px;
+  color: var(--cream);
+  border-color: rgba(244, 203, 115, 0.72);
+  border-radius: 7px;
+  background: rgba(255, 242, 214, 0.12);
+  font-size: 0.72rem;
+  transform: scale(1.08);
+  outline: none;
 }
 
 .scene-rail a.active {
+  width: 32px;
+  height: 30px;
   color: #130b08;
+  border-color: transparent;
+  border-radius: 7px;
   background: var(--gold);
+  font-size: 0.72rem;
+  transform: scale(1);
 }
 
 .scene {
