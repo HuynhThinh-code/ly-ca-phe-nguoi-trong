@@ -116,9 +116,9 @@ const gameGuide = {
   },
   "9": {
     name: "Cảnh 9 · Hợp tác xã",
-    scene: "Bạn thử tăng số hộ tham gia để thấy sức thương lượng tăng khi nông dân liên kết lại.",
-    action: "Kéo số hộ từ thấp lên cao và đọc phần giá bán giả định tăng thêm.",
-    talk: "Kết luận nhỏ: một hộ riêng lẻ yếu, nhưng 1.000 hộ có sản lượng và tiếng nói để đàm phán."
+    scene: "Bạn chọn các năng lực của hợp tác xã để biến liên kết nông dân thành vị thế đàm phán thực sự.",
+    action: "Bấm 4 lá bài: sản lượng chung, tiêu chuẩn chất lượng, kho bảo quản và hợp đồng trực tiếp. Khi đủ năng lực, đường nối sang doanh nghiệp sẽ sáng lên.",
+    talk: "Kết luận nhỏ: một hộ riêng lẻ yếu, nhưng hợp tác xã có tổ chức, tiêu chuẩn, kho và hợp đồng thì có thể đàm phán như một chủ thể kinh tế."
   },
   "10": {
     name: "Cảnh 10 · Hợp đồng công bằng",
@@ -523,30 +523,62 @@ if (shockButton) {
   });
 }
 
-const coopSlider = document.querySelector("#coopSlider");
-const coopHouseholds = document.querySelector("#coopHouseholds");
-const bargainFill = document.querySelector("#bargainFill");
+const negotiationCards = [...document.querySelectorAll("[data-negotiation]")];
+const coopNetwork = document.querySelector("#coopNetwork");
+const dealPower = document.querySelector("#dealPower");
+const dealStatus = document.querySelector("#dealStatus");
+const dealBridgeFill = document.querySelector("#dealBridgeFill");
+const companyTerms = [...document.querySelectorAll("[data-term]")];
 const coopResult = document.querySelector("#coopResult");
+const negotiationBonus = { volume: 3000, quality: 2500, storage: 2500, contract: 4000 };
+const negotiationLabels = {
+  volume: "sản lượng đủ lớn",
+  quality: "chất lượng đồng đều",
+  storage: "kho bảo quản",
+  contract: "hợp đồng trực tiếp",
+};
 
-function updateCoop() {
-  if (!coopSlider) return;
-  const households = Number(coopSlider.value);
-  const power = Math.round((Math.log10(households) / 3) * 100);
-  const bonus =
-    households <= 100
-      ? Math.round((households / 100) * 3000)
-      : households <= 500
-        ? Math.round(3000 + ((households - 100) / 400) * 5000)
-        : Math.round(8000 + ((households - 500) / 500) * 4000);
-  coopHouseholds.textContent = `${households.toLocaleString("vi-VN")} hộ`;
-  bargainFill.style.width = `${power}%`;
-  coopResult.textContent = `Quyền thương lượng đạt khoảng ${power}%, giá bán giả định có thể tăng thêm khoảng ${bonus.toLocaleString("vi-VN")}đ/kg nhờ gom sản lượng và ký hợp đồng trực tiếp.`;
+function updateNegotiation() {
+  if (!negotiationCards.length) return;
+  const selected = negotiationCards
+    .filter((button) => button.getAttribute("aria-pressed") === "true")
+    .map((button) => button.dataset.negotiation);
+  const count = selected.length;
+  const score = count * 25;
+  const bonus = selected.reduce((sum, key) => sum + (negotiationBonus[key] || 0), 0);
+  const ready = count >= 4;
+
+  if (coopNetwork) {
+    coopNetwork.style.setProperty("--deal-power", `${score}%`);
+    coopNetwork.style.setProperty("--deal-score", String(score));
+    coopNetwork.classList.toggle("negotiation-active", count > 0);
+    coopNetwork.classList.toggle("negotiation-ready", ready);
+  }
+  if (dealBridgeFill) dealBridgeFill.style.width = `${score}%`;
+  if (dealPower) dealPower.textContent = `${count}/4 năng lực`;
+  if (dealStatus) dealStatus.textContent = ready ? "Có thể ký trực tiếp" : count >= 2 ? "Đang mở điều kiện" : "Chưa đủ điều kiện";
+  companyTerms.forEach((term) => term.classList.toggle("active", selected.includes(term.dataset.term)));
+
+  if (!coopResult) return;
+  if (!count) {
+    coopResult.textContent = "Bấm từng năng lực để biến hợp tác xã từ nơi gom hộ thành một bên có vị thế đàm phán.";
+    return;
+  }
+  const selectedText = selected.map((key) => negotiationLabels[key]).join(", ");
+  coopResult.textContent = ready
+    ? `Đủ 4 năng lực: hợp tác xã có thể đàm phán trực tiếp, giá giả định tăng thêm khoảng ${bonus.toLocaleString("vi-VN")}đ/kg và giảm rủi ro bị ép bán.`
+    : `Đã có ${selectedText}. Vị thế tăng ${score}%, giá giả định cộng thêm khoảng ${bonus.toLocaleString("vi-VN")}đ/kg nhưng vẫn cần đủ năng lực để ký trực tiếp.`;
 }
 
-if (coopSlider) {
-  coopSlider.addEventListener("input", updateCoop);
-  updateCoop();
-}
+negotiationCards.forEach((button) => {
+  button.addEventListener("click", () => {
+    const pressed = button.getAttribute("aria-pressed") === "true";
+    button.setAttribute("aria-pressed", String(!pressed));
+    updateNegotiation();
+  });
+});
+
+updateNegotiation();
 
 const contractChecks = [...document.querySelectorAll("[data-contract]")];
 const contractIncome = document.querySelector("#contractIncome");

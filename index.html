@@ -12,7 +12,7 @@
       name="description"
       content="Web thuyết trình tương tác về quan hệ lợi ích kinh tế trong chuỗi cà phê Việt Nam."
     />
-    <link rel="stylesheet" href="styles.css?v=scene-compact-20260715-1" />
+    <link rel="stylesheet" href="styles.css?v=negotiation-scene-20260715-1" />
   </head>
   <body>
     <canvas id="beanCanvas" aria-hidden="true"></canvas>
@@ -444,7 +444,11 @@
       </section>
 
       <section id="scene-9" class="scene split" data-scene="9">
-        <div class="network reveal" aria-label="Mạng lưới hợp tác xã">
+        <div class="network reveal" id="coopNetwork" aria-label="Mạng lưới hợp tác xã">
+          <span class="deal-link" aria-hidden="true"></span>
+          <span class="deal-spark s1" aria-hidden="true"></span>
+          <span class="deal-spark s2" aria-hidden="true"></span>
+          <span class="deal-spark s3" aria-hidden="true"></span>
           <span class="node n1">Hộ 1</span>
           <span class="node n2">Hộ 2</span>
           <span class="node n3">Hộ 3</span>
@@ -463,13 +467,31 @@
             Liên hệ thực tế: Nghị định 98/2018/NĐ-CP và Luật Hợp tác xã 2023 tạo cơ sở cho
             liên kết sản xuất, tiêu thụ nông sản.
           </p>
-          <div class="coop-sim">
-            <label>
-              <span class="range-head"><span>Số hộ tham gia</span><strong id="coopHouseholds">120 hộ</strong></span>
-              <input id="coopSlider" type="range" min="1" max="1000" value="120" step="1" />
-            </label>
-            <div class="bargain-line"><span id="bargainFill"></span></div>
-            <p id="coopResult">Quyền thương lượng còn yếu, giá bán gần như phụ thuộc người mua.</p>
+          <div class="coop-sim negotiation-board" id="negotiationBoard">
+            <div class="deal-table" aria-live="polite">
+              <div>
+                <small>Anh Khánh + hợp tác xã</small>
+                <strong id="dealPower">0/4 năng lực</strong>
+              </div>
+              <div class="deal-bridge" aria-hidden="true"><span id="dealBridgeFill"></span></div>
+              <div>
+                <small>Doanh nghiệp</small>
+                <strong id="dealStatus">Chưa đủ điều kiện</strong>
+              </div>
+            </div>
+            <div class="negotiation-cards" aria-label="Chọn năng lực đàm phán của hợp tác xã">
+              <button type="button" data-negotiation="volume" aria-pressed="false"><span>Sản lượng chung</span><small>Đủ đơn hàng lớn</small></button>
+              <button type="button" data-negotiation="quality" aria-pressed="false"><span>Tiêu chuẩn chất lượng</span><small>Đồng đều, truy xuất được</small></button>
+              <button type="button" data-negotiation="storage" aria-pressed="false"><span>Kho bảo quản</span><small>Không bị ép bán ngay</small></button>
+              <button type="button" data-negotiation="contract" aria-pressed="false"><span>Hợp đồng trực tiếp</span><small>Giảm phụ thuộc trung gian</small></button>
+            </div>
+            <div class="company-terms">
+              <span data-term="volume">Nhận lô lớn</span>
+              <span data-term="quality">Thưởng chất lượng</span>
+              <span data-term="storage">Giữ giá khi biến động</span>
+              <span data-term="contract">Ký trực tiếp</span>
+            </div>
+            <p id="coopResult">Bấm từng năng lực để biến hợp tác xã từ nơi “gom hộ” thành một bên có vị thế đàm phán.</p>
           </div>
         </div>
       </section>
@@ -544,6 +566,6 @@
       </div>
     </aside>
 
-    <script src="script.js?v=scene-compact-20260715-1"></script>
+    <script src="script.js?v=negotiation-scene-20260715-1"></script>
   </body>
 </html>

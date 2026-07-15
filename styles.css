@@ -2512,6 +2512,118 @@ blockquote {
   background: rgba(99, 179, 111, 0.08);
 }
 
+.negotiation-board {
+  display: grid;
+  gap: 14px;
+}
+
+.deal-table {
+  display: grid;
+  grid-template-columns: 1fr minmax(110px, 0.7fr) 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.deal-table div:not(.deal-bridge) {
+  padding: 12px;
+  border: 1px solid rgba(255, 242, 214, 0.14);
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.deal-table small {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.deal-table strong {
+  color: var(--cream);
+}
+
+.deal-bridge {
+  height: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 242, 214, 0.13);
+}
+
+.deal-bridge span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--leaf), var(--gold));
+  transition: width 320ms ease;
+}
+
+.negotiation-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.negotiation-cards button {
+  min-height: 78px;
+  padding: 12px;
+  color: var(--cream);
+  text-align: left;
+  border: 1px solid rgba(255, 242, 214, 0.16);
+  border-radius: var(--radius);
+  background: rgba(255, 242, 214, 0.08);
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.negotiation-cards button:hover,
+.negotiation-cards button:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(244, 203, 115, 0.5);
+  outline: none;
+}
+
+.negotiation-cards button[aria-pressed="true"] {
+  color: #160d09;
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--gold), #9fd889);
+  box-shadow: 0 12px 28px rgba(99, 179, 111, 0.18);
+}
+
+.negotiation-cards span {
+  display: block;
+  font-weight: 900;
+}
+
+.negotiation-cards small {
+  display: block;
+  margin-top: 4px;
+  opacity: 0.76;
+  line-height: 1.35;
+}
+
+.company-terms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.company-terms span {
+  padding: 7px 10px;
+  color: rgba(255, 242, 214, 0.62);
+  border: 1px solid rgba(255, 242, 214, 0.14);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.14);
+  font-size: 0.84rem;
+  font-weight: 780;
+}
+
+.company-terms span.active {
+  color: #10170f;
+  border-color: transparent;
+  background: var(--mint);
+}
+
 .bargain-line {
   height: 14px;
   margin: 16px 0;
@@ -2593,6 +2705,8 @@ blockquote {
 
 .network {
   position: relative;
+  --deal-power: 0%;
+  --deal-score: 0;
   min-height: 540px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -2602,6 +2716,64 @@ blockquote {
     rgba(10, 18, 12, 0.42);
   background-size: 54px 54px;
   box-shadow: var(--shadow);
+}
+
+.deal-link {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 34%;
+  height: 10px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(244, 203, 115, 0.92) 0 var(--deal-power), rgba(255, 242, 214, 0.12) var(--deal-power) 100%);
+  box-shadow: 0 0 calc(8px + var(--deal-score) * 0.22px) rgba(244, 203, 115, 0.34);
+  opacity: 0.84;
+  z-index: 1;
+  transition: background 320ms ease, box-shadow 320ms ease;
+}
+
+.deal-spark {
+  position: absolute;
+  left: calc(52% + var(--deal-score) * 0.25%);
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0;
+  z-index: 3;
+  box-shadow: 0 0 18px rgba(244, 203, 115, 0.58);
+}
+
+.network.negotiation-active .deal-spark {
+  opacity: 0.85;
+  animation: sparkTravel 1.8s ease-in-out infinite;
+}
+
+.deal-spark.s2 {
+  animation-delay: -0.6s;
+}
+
+.deal-spark.s3 {
+  animation-delay: -1.2s;
+}
+
+.network.negotiation-ready .deal-link {
+  background: linear-gradient(90deg, var(--leaf), var(--gold));
+  box-shadow: 0 0 36px rgba(99, 179, 111, 0.36), 0 0 54px rgba(244, 203, 115, 0.24);
+}
+
+@keyframes sparkTravel {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+  50% {
+    transform: translate(calc(-50% + 42px), -50%) scale(1.15);
+  }
 }
 
 .network::before,
@@ -2631,6 +2803,7 @@ blockquote {
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
   font-weight: 880;
   text-align: center;
+  z-index: 2;
 }
 
 .n1 {
@@ -2955,6 +3128,18 @@ meter {
     grid-template-columns: 1fr;
   }
 
+  .deal-table {
+    grid-template-columns: 1fr;
+  }
+
+  .deal-bridge {
+    height: 10px;
+  }
+
+  .negotiation-cards {
+    grid-template-columns: 1fr;
+  }
+
   .topbar {
     top: 10px;
     padding: 10px;
@@ -3116,6 +3301,33 @@ meter {
   .coop-sim {
     margin-top: 16px;
     padding: 16px;
+  }
+
+  .negotiation-board {
+    gap: 10px;
+  }
+
+  .deal-table {
+    grid-template-columns: 1fr 90px 1fr;
+    gap: 8px;
+  }
+
+  .deal-table div:not(.deal-bridge) {
+    padding: 9px;
+  }
+
+  .negotiation-cards {
+    gap: 8px;
+  }
+
+  .negotiation-cards button {
+    min-height: 62px;
+    padding: 10px;
+  }
+
+  .company-terms span {
+    padding: 6px 9px;
+    font-size: 0.78rem;
   }
 
   .chain,
