@@ -14,6 +14,65 @@ const chatScene = document.querySelector("#chatScene");
 const chatMessage = document.querySelector("#chatMessage");
 let currentScene = "1";
 
+const sceneConcepts = {
+  "1": {
+    term: "Lợi ích kinh tế",
+    text: "Giáo trình 5.3.1 xem lợi ích kinh tế là lợi ích vật chất mà các chủ thể thu được trong hoạt động kinh tế. Đây là động lực khiến Anh Khánh, thương lái, doanh nghiệp và người tiêu dùng đều hành động."
+  },
+  "2": {
+    term: "Lợi ích gắn với điều kiện sản xuất",
+    text: "Mức thỏa mãn lợi ích phụ thuộc vào số lượng, chất lượng hàng hóa và trình độ sản xuất. Vì vậy, một năm lao động và chi phí của Anh Khánh là nền để hiểu giá 40.000đ/kg."
+  },
+  "3": {
+    term: "Quan hệ lợi ích kinh tế",
+    text: "Quan hệ lợi ích kinh tế là các tương tác giữa người với người, tổ chức với tổ chức trong xác lập và thực hiện lợi ích. Chuỗi cà phê chính là mạng quan hệ lợi ích giữa nhiều chủ thể."
+  },
+  "4": {
+    term: "Thực hiện lợi ích theo nguyên tắc thị trường",
+    text: "Trong kinh tế thị trường, giá cả, cạnh tranh, cung - cầu là cơ chế quan trọng để các chủ thể thực hiện lợi ích. Thanh phân rã cho thấy giá bán lẻ không tự động phản ánh phần của người trồng."
+  },
+  "5": {
+    term: "Thống nhất và mâu thuẫn lợi ích",
+    text: "Các lợi ích vừa thống nhất vì chủ thể này có thể là điều kiện cho chủ thể khác, vừa mâu thuẫn khi mỗi bên theo đuổi lợi ích riêng. Cán cân mô phỏng độ lệch quyền mặc cả trong quan hệ đó."
+  },
+  "6": {
+    term: "Nhân tố tác động: hội nhập và thị trường",
+    text: "Giáo trình nhấn mạnh hội nhập và biến động thị trường có thể làm lợi ích thay đổi mạnh. Cú sốc giá cho thấy bên có ít công cụ phòng ngừa thường chịu rủi ro nhiều hơn."
+  },
+  "7": {
+    term: "Hài hòa lợi ích kinh tế",
+    text: "Hài hòa lợi ích là hạn chế mặt mâu thuẫn, tránh va chạm/xung đột và khuyến khích mặt thống nhất. Nhà nước dùng pháp luật, chính sách, hành chính, thông tin để điều tiết quan hệ này."
+  },
+  "8": {
+    term: "Vai trò Nhà nước",
+    text: "Mục 5.3.2 nêu các vai trò: bảo vệ lợi ích hợp pháp, tạo môi trường thuận lợi, điều hòa cá nhân - doanh nghiệp - xã hội, kiểm soát tiêu cực và giải quyết mâu thuẫn."
+  },
+  "9": {
+    term: "Lợi ích nhóm tích cực",
+    text: "Giáo trình thừa nhận các cá nhân/tổ chức có thể liên kết thành nhóm lợi ích nếu phù hợp lợi ích quốc gia và không gây hại lợi ích khác. Hợp tác xã là cách liên kết tích cực của nông dân."
+  },
+  "10": {
+    term: "Chính sách và tổ chức xã hội",
+    text: "Ngoài nguyên tắc thị trường, giáo trình nhấn mạnh cần chính sách Nhà nước và vai trò tổ chức xã hội để khắc phục hạn chế thị trường. Hợp đồng công bằng biến nguyên tắc ấy thành điều khoản."
+  },
+  "11": {
+    term: "Lợi ích cá nhân - doanh nghiệp - xã hội",
+    text: "Lợi ích cá nhân chính đáng cần được tôn trọng, nhưng phải đặt trong liên hệ với lợi ích doanh nghiệp và xã hội. Chuỗi bền vững là khi ba nhóm lợi ích này cùng được thực hiện hợp lý."
+  }
+};
+
+document.querySelectorAll(".scene[data-scene]").forEach((scene) => {
+  const concept = sceneConcepts[scene.dataset.scene];
+  const target = scene.querySelector(".section-copy, .hero-copy");
+  if (!concept || !target || target.querySelector(".concept-card")) return;
+  const card = document.createElement("aside");
+  card.className = "concept-card";
+  card.innerHTML = `<small>Khái niệm giáo trình</small><strong>${concept.term}</strong><p>${concept.text}</p>`;
+  const anchor = target.querySelector("blockquote") || target.querySelector(".hero-actions") || target.querySelector("p:not(.eyebrow)");
+  if (anchor) anchor.insertAdjacentElement("afterend", card);
+  else target.append(card);
+});
+
 const gameGuide = {
   "1": {
     name: "Cảnh 1 · Mở đầu",

@@ -828,6 +828,47 @@ body.game-started .khanh-chat {
   text-align: center;
 }
 
+.concept-card {
+  margin: 22px 0;
+  padding: 16px 18px;
+  border: 1px solid rgba(244, 203, 115, 0.28);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(244, 203, 115, 0.12), rgba(99, 179, 111, 0.07)),
+    rgba(16, 9, 6, 0.52);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+}
+
+.concept-card small {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--gold);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.concept-card strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--cream);
+  font-size: 1.02rem;
+}
+
+.concept-card p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.58;
+}
+
+.section-copy.narrow .concept-card {
+  margin-inline: auto;
+  text-align: left;
+}
+
 .eyebrow {
   margin: 0 0 14px;
   color: var(--gold);
