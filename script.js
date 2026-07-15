@@ -61,18 +61,6 @@ const sceneConcepts = {
   }
 };
 
-document.querySelectorAll(".scene[data-scene]").forEach((scene) => {
-  const concept = sceneConcepts[scene.dataset.scene];
-  const target = scene.querySelector(".section-copy, .hero-copy");
-  if (!concept || !target || target.querySelector(".concept-card")) return;
-  const card = document.createElement("aside");
-  card.className = "concept-card";
-  card.innerHTML = `<small>Khái niệm giáo trình</small><strong>${concept.term}</strong><p>${concept.text}</p>`;
-  const anchor = target.querySelector("blockquote") || target.querySelector(".hero-actions") || target.querySelector("p:not(.eyebrow)");
-  if (anchor) anchor.insertAdjacentElement("afterend", card);
-  else target.append(card);
-});
-
 const gameGuide = {
   "1": {
     name: "Cảnh 1 · Mở đầu",
@@ -158,9 +146,11 @@ function setChatOpen(open) {
 function answerGuide(kind) {
   if (!chatMessage) return;
   const guide = gameGuide[currentScene] || gameGuide["1"];
+  const concept = sceneConcepts[currentScene] || sceneConcepts["1"];
   const answers = {
     rules: "Luật chơi: bạn là Anh Khánh. Đi qua từng cảnh, kéo thanh, bấm thẻ, thử mô phỏng và dùng kết quả để giải thích quan hệ lợi ích kinh tế trong chuỗi cà phê.",
     scene: guide.scene,
+    concept: `Khái niệm giáo trình: ${concept.term}. ${concept.text}`,
     talk: guide.talk,
     action: guide.action,
   };
