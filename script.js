@@ -5,7 +5,11 @@ const revealEls = [...document.querySelectorAll(".reveal")];
 const topbar = document.querySelector("#topbar");
 const topbarToggle = document.querySelector("#topbarToggle");
 const storyGate = document.querySelector("#storyGate");
+const openRoleplay = document.querySelector("#openRoleplay");
 const startGame = document.querySelector("#startGame");
+const storyDialogueText = document.querySelector("#storyDialogueText");
+const storyNext = document.querySelector("#storyNext");
+const storyRules = document.querySelector("#storyRules");
 const gameHudScene = document.querySelector("#hudScene");
 const khanhChat = document.querySelector("#khanhChat");
 const chatToggle = document.querySelector("#chatToggle");
@@ -17,7 +21,7 @@ let currentScene = "1";
 const sceneConcepts = {
   "1": {
     term: "Lợi ích kinh tế",
-    text: "Giáo trình 5.3.1 xem lợi ích kinh tế là lợi ích vật chất mà các chủ thể thu được trong hoạt động kinh tế. Đây là động lực khiến Anh Khánh, thương lái, doanh nghiệp và người tiêu dùng đều hành động."
+    text: "Lợi ích kinh tế là lợi ích vật chất mà các chủ thể thu được trong hoạt động kinh tế. Đây là động lực khiến Anh Khánh, thương lái, doanh nghiệp và người tiêu dùng đều hành động."
   },
   "2": {
     term: "Lợi ích gắn với điều kiện sản xuất",
@@ -37,7 +41,7 @@ const sceneConcepts = {
   },
   "6": {
     term: "Nhân tố tác động: hội nhập và thị trường",
-    text: "Giáo trình nhấn mạnh hội nhập và biến động thị trường có thể làm lợi ích thay đổi mạnh. Cú sốc giá cho thấy bên có ít công cụ phòng ngừa thường chịu rủi ro nhiều hơn."
+    text: "Hội nhập và biến động thị trường có thể làm lợi ích thay đổi mạnh. Cú sốc giá cho thấy bên có ít công cụ phòng ngừa thường chịu rủi ro nhiều hơn."
   },
   "7": {
     term: "Hài hòa lợi ích kinh tế",
@@ -45,15 +49,15 @@ const sceneConcepts = {
   },
   "8": {
     term: "Vai trò Nhà nước",
-    text: "Mục 5.3.2 nêu các vai trò: bảo vệ lợi ích hợp pháp, tạo môi trường thuận lợi, điều hòa cá nhân - doanh nghiệp - xã hội, kiểm soát tiêu cực và giải quyết mâu thuẫn."
+    text: "Nhà nước có vai trò bảo vệ lợi ích hợp pháp, tạo môi trường thuận lợi, điều hòa cá nhân - doanh nghiệp - xã hội, kiểm soát tiêu cực và giải quyết mâu thuẫn."
   },
   "9": {
     term: "Lợi ích nhóm tích cực",
-    text: "Giáo trình thừa nhận các cá nhân/tổ chức có thể liên kết thành nhóm lợi ích nếu phù hợp lợi ích quốc gia và không gây hại lợi ích khác. Hợp tác xã là cách liên kết tích cực của nông dân."
+    text: "Các cá nhân hoặc tổ chức có thể liên kết thành nhóm lợi ích nếu phù hợp lợi ích quốc gia và không gây hại lợi ích khác. Hợp tác xã là cách liên kết tích cực của nông dân."
   },
   "10": {
     term: "Chính sách và tổ chức xã hội",
-    text: "Ngoài nguyên tắc thị trường, giáo trình nhấn mạnh cần chính sách Nhà nước và vai trò tổ chức xã hội để khắc phục hạn chế thị trường. Hợp đồng công bằng biến nguyên tắc ấy thành điều khoản."
+    text: "Ngoài nguyên tắc thị trường, cần chính sách Nhà nước và vai trò tổ chức xã hội để khắc phục hạn chế thị trường. Hợp đồng công bằng biến nguyên tắc ấy thành điều khoản."
   },
   "11": {
     term: "Lợi ích cá nhân - doanh nghiệp - xã hội",
@@ -65,7 +69,7 @@ const gameGuide = {
   "1": {
     name: "Cảnh 1 · Mở đầu",
     scene: "Bạn là Anh Khánh. Cảnh này đặt vấn đề: vì sao 1kg cà phê nhân 40.000đ lại liên quan đến một ly cà phê 85.000đ ở thành phố.",
-    action: "Bấm nút theo dõi hạt cà phê hoặc cuộn xuống Cảnh 2 để bắt đầu hành trình.",
+    action: "Bấm nút Bắt đầu nhập vai để mở lời dẫn nhập vai, hoặc cuộn xuống Cảnh 2 nếu muốn trình bày thẳng.",
     talk: "Mở bài nên nói: tôi không chỉ bán cà phê, tôi đang bước vào một chuỗi lợi ích có nhiều chủ thể."
   },
   "2": {
@@ -150,17 +154,79 @@ function answerGuide(kind) {
   const answers = {
     rules: "Luật chơi: bạn là Anh Khánh. Đi qua từng cảnh, kéo thanh, bấm thẻ, thử mô phỏng và dùng kết quả để giải thích quan hệ lợi ích kinh tế trong chuỗi cà phê.",
     scene: guide.scene,
-    concept: `Khái niệm giáo trình: ${concept.term}. ${concept.text}`,
+    concept: `${concept.term}: ${concept.text}`,
     talk: guide.talk,
     action: guide.action,
   };
   chatMessage.textContent = answers[kind] || guide.scene;
 }
 
-if (storyGate) document.body.classList.add("game-locked");
+const roleplayLines = [
+  "Mình là Khánh, người trồng cà phê ở Đắk Lắk.",
+  "Một năm mình chăm cây, bỏ giống, phân bón, nước tưới và công lao động trước khi có tiền bán.",
+  "Cuối vụ, 1kg cà phê nhân được thương lái mua 40.000đ. Nhưng ở thành phố, một ly từ hạt ấy có thể bán 85.000đ.",
+  "Bạn sẽ vào vai Anh Khánh, đi qua từng mắt xích để xem ai tạo giá trị, ai chịu rủi ro và ai đang hưởng lợi nhiều hơn.",
+];
+let roleplayIndex = 0;
+let typewriterTimer = null;
+let currentDialogue = "";
+let dialogueComplete = false;
+
+function setStoryReady(ready) {
+  if (!storyRules || !startGame || !storyNext) return;
+  storyRules.hidden = !ready;
+  startGame.hidden = !ready;
+  storyNext.hidden = ready;
+}
+
+function typeStoryLine(line) {
+  if (!storyDialogueText) return;
+  window.clearInterval(typewriterTimer);
+  currentDialogue = line;
+  dialogueComplete = false;
+  storyDialogueText.textContent = "";
+  let index = 0;
+  typewriterTimer = window.setInterval(() => {
+    index += 1;
+    storyDialogueText.textContent = line.slice(0, index);
+    if (index >= line.length) {
+      window.clearInterval(typewriterTimer);
+      dialogueComplete = true;
+    }
+  }, 28);
+}
+
+function openStoryGate() {
+  if (!storyGate) return;
+  storyGate.hidden = false;
+  document.body.classList.add("roleplay-open", "game-locked");
+  document.body.classList.remove("game-started");
+  roleplayIndex = 0;
+  setStoryReady(false);
+  typeStoryLine(roleplayLines[roleplayIndex]);
+}
+
+function advanceStoryLine() {
+  if (!dialogueComplete) {
+    window.clearInterval(typewriterTimer);
+    if (storyDialogueText) storyDialogueText.textContent = currentDialogue;
+    dialogueComplete = true;
+    return;
+  }
+  roleplayIndex += 1;
+  if (roleplayIndex >= roleplayLines.length) {
+    setStoryReady(true);
+    return;
+  }
+  typeStoryLine(roleplayLines[roleplayIndex]);
+}
+
+openRoleplay?.addEventListener("click", openStoryGate);
+storyNext?.addEventListener("click", advanceStoryLine);
+
 startGame?.addEventListener("click", () => {
   document.body.classList.add("game-started");
-  document.body.classList.remove("game-locked");
+  document.body.classList.remove("game-locked", "roleplay-open");
   window.setTimeout(() => {
     storyGate?.setAttribute("hidden", "");
   }, 460);

@@ -42,6 +42,10 @@ body.game-locked {
   overflow: hidden;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -188,6 +192,12 @@ body.game-started .story-gate {
   pointer-events: none;
 }
 
+body.roleplay-open .story-gate {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
 .story-gate::before {
   content: "";
   position: absolute;
@@ -243,6 +253,65 @@ body.game-started .story-gate {
   color: var(--cream);
 }
 
+.story-dialogue {
+  position: relative;
+  min-height: 148px;
+  margin: 24px 0 18px;
+  padding: 20px 20px 18px;
+  border: 1px solid rgba(244, 203, 115, 0.26);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(244, 203, 115, 0.12), rgba(99, 179, 111, 0.08)),
+    rgba(16, 9, 6, 0.52);
+  box-shadow: inset 0 1px 0 rgba(255, 242, 214, 0.08);
+}
+
+.story-dialogue small {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--gold);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.story-dialogue p {
+  min-height: 64px;
+  margin: 0;
+  color: var(--cream);
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  line-height: 1.65;
+  font-weight: 720;
+}
+
+.story-dialogue p::after {
+  content: "";
+  display: inline-block;
+  width: 0.56em;
+  height: 1.08em;
+  margin-left: 5px;
+  transform: translateY(0.18em);
+  background: var(--gold);
+  animation: cursorBlink 760ms steps(2, end) infinite;
+}
+
+.story-next {
+  margin-top: 14px;
+  padding: 10px 14px;
+  color: var(--cream);
+  border: 1px solid rgba(255, 242, 214, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 242, 214, 0.08);
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.story-next:hover,
+.story-next:focus-visible {
+  color: #160d09;
+  background: var(--gold);
+}
+
 .story-rules {
   display: grid;
   gap: 10px;
@@ -260,6 +329,12 @@ body.game-started .story-gate {
 
 .story-start {
   cursor: pointer;
+}
+
+@keyframes cursorBlink {
+  50% {
+    opacity: 0;
+  }
 }
 
 .khanh-model {
@@ -901,6 +976,7 @@ p {
   box-shadow: 0 18px 44px rgba(244, 203, 115, 0.22);
   text-decoration: none;
   font-weight: 850;
+  cursor: pointer;
 }
 
 .primary-btn svg {
