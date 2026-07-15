@@ -12,7 +12,7 @@
       name="description"
       content="Web thuyết trình tương tác về quan hệ lợi ích kinh tế trong chuỗi cà phê Việt Nam."
     />
-    <link rel="stylesheet" href="styles.css?v=negotiation-scene-20260715-1" />
+    <link rel="stylesheet" href="styles.css?v=negotiation-moment-20260715-1" />
   </head>
   <body>
     <canvas id="beanCanvas" aria-hidden="true"></canvas>
@@ -126,7 +126,6 @@
 
       <section id="scene-2" class="scene split" data-scene="2">
         <div class="section-copy reveal">
-          <p class="eyebrow">Cảnh 2</p>
           <h2>Trước khi có giá 40.000 đồng, đã có một năm lao động</h2>
           <p>
             Anh Khánh đầu tư giống, phân bón, nước tưới và công chăm sóc. Tiền bỏ ra
@@ -175,7 +174,6 @@
 
       <section id="scene-3" class="scene" data-scene="3">
         <div class="section-copy narrow reveal">
-          <p class="eyebrow">Cảnh 3</p>
           <h2>Giá tăng lên vì giá trị được tạo thêm</h2>
           <p>
             Chuỗi cà phê không phải một đường thẳng của lợi nhuận, mà là chuỗi đóng góp,
@@ -275,7 +273,6 @@
           <div class="layer l-bean" id="layerBean"><span>Nguyên liệu</span><strong>1%</strong></div>
         </div>
         <div class="section-copy reveal">
-          <p class="eyebrow">Cảnh 4</p>
           <h2>85.000 đồng không phải toàn bộ là tiền cà phê</h2>
           <p>
             Doanh thu bán lẻ phải chi trả cho quá trình biến cà phê nhân thành sản phẩm
@@ -312,7 +309,6 @@
 
       <section id="scene-5" class="scene split" data-scene="5">
         <div class="section-copy reveal">
-          <p class="eyebrow">Cảnh 5</p>
           <h2>Giá trị được tạo bởi nhiều người, nhưng không được chia đều</h2>
           <p>
             Giáo trình nhấn mạnh lợi ích kinh tế là lợi ích vật chất mà các chủ thể thu
@@ -347,7 +343,6 @@
       <section id="scene-6" class="scene storm-scene" data-scene="6">
         <canvas id="stormCanvas" aria-hidden="true"></canvas>
         <div class="section-copy narrow reveal">
-          <p class="eyebrow">Cảnh 6</p>
           <h2>Khi giá thế giới giảm, ai là người chịu rủi ro?</h2>
           <p>
             Nông dân bán theo giá từng ngày có thể nhận giá thấp đúng lúc thu hoạch.
@@ -389,7 +384,6 @@
           <span>Nhà nước</span>
         </div>
         <div class="section-copy reveal">
-          <p class="eyebrow">Cảnh 7</p>
           <h2>Nhà nước tạo điều kiện để lợi ích hài hòa hơn</h2>
           <p>
             Chỉ dựa vào nguyên tắc thị trường là chưa đủ, vì quan hệ lợi ích kinh tế luôn
@@ -416,7 +410,6 @@
 
       <section id="scene-8" class="scene" data-scene="8">
         <div class="section-copy narrow reveal">
-          <p class="eyebrow">Cảnh 8</p>
           <h2>Bốn vai trò của Nhà nước trong hài hòa lợi ích</h2>
         </div>
         <div class="doors reveal">
@@ -455,9 +448,12 @@
           <span class="node n4">Hộ 4</span>
           <span class="node coop">Hợp tác xã</span>
           <span class="node biz">Doanh nghiệp</span>
+          <span class="coop-badge badge-volume" data-badge="volume">SL</span>
+          <span class="coop-badge badge-quality" data-badge="quality">QC</span>
+          <span class="coop-badge badge-storage" data-badge="storage">KHO</span>
+          <span class="coop-badge badge-contract" data-badge="contract">HĐ</span>
         </div>
         <div class="section-copy reveal">
-          <p class="eyebrow">Cảnh 9</p>
           <h2>Một nông dân khó thay đổi giá. Một nghìn nông dân có thể thay đổi vị thế.</h2>
           <p>
             Hợp tác xã giúp gom sản lượng, thống nhất tiêu chuẩn, đầu tư kho, tiếp cận tín
@@ -491,6 +487,13 @@
               <span data-term="storage">Giữ giá khi biến động</span>
               <span data-term="contract">Ký trực tiếp</span>
             </div>
+            <div class="deal-contract" id="dealContract" aria-live="polite">
+              <div>
+                <small>Dự thảo thỏa thuận</small>
+                <strong id="dealContractTitle">Chưa đủ năng lực ký</strong>
+              </div>
+              <span id="dealStamp">Ký trực tiếp</span>
+            </div>
             <p id="coopResult">Bấm từng năng lực để biến hợp tác xã từ nơi “gom hộ” thành một bên có vị thế đàm phán.</p>
           </div>
         </div>
@@ -498,7 +501,6 @@
 
       <section id="scene-10" class="scene" data-scene="10">
         <div class="section-copy narrow reveal">
-          <p class="eyebrow">Cảnh 10</p>
           <h2>Công bằng phải được viết thành điều khoản</h2>
         </div>
         <div class="contract reveal" id="contractBuilder">
@@ -522,7 +524,6 @@
           <div class="ring r3"></div>
         </div>
         <div class="section-copy reveal">
-          <p class="eyebrow">Cảnh 11</p>
           <h2>Một chuỗi cà phê bền vững không thể có một mắt xích luôn chịu thiệt</h2>
           <div class="takeaways">
             <article><h3>Nông dân</h3><p>Thu nhập đủ tái sản xuất, được thưởng chất lượng, giảm rủi ro.</p></article>
@@ -566,6 +567,6 @@
       </div>
     </aside>
 
-    <script src="script.js?v=negotiation-scene-20260715-1"></script>
+    <script src="script.js?v=negotiation-moment-20260715-1"></script>
   </body>
 </html>

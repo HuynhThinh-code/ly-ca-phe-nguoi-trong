@@ -529,6 +529,9 @@ const dealPower = document.querySelector("#dealPower");
 const dealStatus = document.querySelector("#dealStatus");
 const dealBridgeFill = document.querySelector("#dealBridgeFill");
 const companyTerms = [...document.querySelectorAll("[data-term]")];
+const coopBadges = [...document.querySelectorAll("[data-badge]")];
+const dealContract = document.querySelector("#dealContract");
+const dealContractTitle = document.querySelector("#dealContractTitle");
 const coopResult = document.querySelector("#coopResult");
 const negotiationBonus = { volume: 3000, quality: 2500, storage: 2500, contract: 4000 };
 const negotiationLabels = {
@@ -558,6 +561,15 @@ function updateNegotiation() {
   if (dealPower) dealPower.textContent = `${count}/4 năng lực`;
   if (dealStatus) dealStatus.textContent = ready ? "Có thể ký trực tiếp" : count >= 2 ? "Đang mở điều kiện" : "Chưa đủ điều kiện";
   companyTerms.forEach((term) => term.classList.toggle("active", selected.includes(term.dataset.term)));
+  coopBadges.forEach((badge) => badge.classList.toggle("active", selected.includes(badge.dataset.badge)));
+  if (dealContract) dealContract.classList.toggle("ready", ready);
+  if (dealContractTitle) {
+    dealContractTitle.textContent = ready
+      ? "Doanh nghiệp chấp nhận bàn ký trực tiếp"
+      : count
+        ? `Còn thiếu ${4 - count} năng lực để đủ vị thế`
+        : "Chưa đủ năng lực ký";
+  }
 
   if (!coopResult) return;
   if (!count) {
