@@ -3063,7 +3063,228 @@ meter {
   }
 }
 
-@media (max-height: 820px) and (min-width: 900px) {
+@media (max-height: 980px) and (min-width: 900px) {
+  .scene {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 84px 0 58px;
+    gap: 30px;
+  }
+
+  .scene::before {
+    top: 62px;
+  }
+
+  .hero,
+  .split {
+    grid-template-columns: minmax(0, 0.96fr) minmax(320px, 1fr);
+    gap: clamp(26px, 4vw, 54px);
+  }
+
+  .section-copy {
+    max-width: 620px;
+    padding-right: 18px;
+  }
+
+  h1 {
+    font-size: clamp(3rem, 6.4vw, 6.4rem);
+  }
+
+  h2 {
+    margin-bottom: 16px;
+    font-size: clamp(2.25rem, 4.05vw, 4.05rem);
+    line-height: 0.94;
+  }
+
+  .eyebrow {
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: clamp(0.96rem, 1.1vw, 1.08rem);
+    line-height: 1.56;
+  }
+
+  .lead {
+    font-size: clamp(1rem, 1.35vw, 1.18rem);
+  }
+
+  .network {
+    min-height: min(58vh, 500px);
+  }
+
+  .coop-sim {
+    margin-top: 16px;
+    padding: 16px;
+  }
+
+  .chain,
+  .doors,
+  .contract {
+    margin-top: 22px;
+  }
+
+  .chain {
+    gap: 12px;
+    grid-template-columns: repeat(5, minmax(145px, 1fr));
+  }
+
+  .chain article,
+  .contract article,
+  .doors article,
+  .takeaways article {
+    min-height: 134px;
+    padding: 14px;
+  }
+
+  .chain article::before {
+    left: 14px;
+    right: 14px;
+    top: 46px;
+  }
+
+  .value-risk {
+    left: 14px;
+    right: 14px;
+    bottom: 12px;
+  }
+
+  .chain p,
+  .contract p,
+  .doors p,
+  .takeaways p {
+    font-size: 0.94rem;
+    line-height: 1.45;
+  }
+
+  .chain-lab,
+  .retail-lab,
+  .contract-score,
+  .commitment-box,
+  .coop-sim {
+    padding: 16px;
+  }
+
+  .chain-lab {
+    margin-top: 14px;
+    padding: 14px;
+  }
+
+  .chain-route {
+    height: 34px;
+    margin-bottom: 10px;
+  }
+
+  .chain-detail {
+    grid-template-columns: minmax(220px, 0.66fr) 1fr auto;
+    gap: 12px;
+  }
+
+  .chain-detail h3 {
+    font-size: clamp(1.35rem, 2.2vw, 2rem);
+  }
+
+  .chain-detail-grid article {
+    min-height: 72px;
+    padding: 10px;
+  }
+
+  .chain-detail-grid strong {
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+
+  .chain-cost-game {
+    margin-top: 10px;
+    padding: 13px;
+    gap: 10px 14px;
+  }
+
+  .doors article {
+    min-height: 230px;
+  }
+
+  .contract article {
+    min-height: 145px;
+  }
+
+  .revenue-bar {
+    min-height: 46px;
+    margin-top: 12px;
+  }
+
+  .cup-anatomy {
+    width: min(390px, 42vw);
+    height: min(58vh, 490px);
+    padding: 18px;
+  }
+
+  .calculator {
+    margin-top: 16px;
+    padding: 16px;
+  }
+
+  .calculator label {
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .calc-grid {
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .calc-grid div {
+    padding: 12px;
+  }
+
+  .calc-grid strong {
+    margin-top: 4px;
+    font-size: 1.2rem;
+  }
+
+  .calc-narrative {
+    margin-top: 12px;
+    padding: 11px 12px;
+    font-size: 0.9rem;
+    line-height: 1.42;
+  }
+
+  .fineprint {
+    font-size: 0.78rem;
+    line-height: 1.36;
+  }
+
+  .final-cup {
+    width: min(290px, 70vw);
+  }
+
+  .takeaways {
+    grid-template-columns: repeat(3, minmax(150px, 1fr));
+    margin: 14px 0 16px;
+    gap: 10px;
+  }
+
+  .commitment-box {
+    margin-top: 14px;
+    gap: 8px;
+  }
+
+  .commitment-box label {
+    font-size: 0.94rem;
+  }
+
+  .closing {
+    margin-top: 12px;
+    font-size: clamp(1.65rem, 3vw, 3rem);
+    line-height: 0.98;
+  }
+
+  .finale {
+    grid-template-columns: 0.56fr minmax(0, 1fr);
+    gap: 26px;
+  }
+
   .story-gate {
     grid-template-columns: minmax(260px, 0.76fr) minmax(360px, 1fr);
     gap: clamp(22px, 3.2vw, 48px);
