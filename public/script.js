@@ -653,6 +653,7 @@ function setPolicy(key) {
   if (policyBeforeValue) policyBeforeValue.textContent = `${item[2]}%`;
   if (policyAfterValue) policyAfterValue.textContent = `${item[3]}%`;
   stateHand?.setAttribute("data-policy", key);
+  stateHand?.querySelectorAll(".policy-slice").forEach((slice) => slice.classList.toggle("is-active", slice.dataset.policy === key));
   policyEffect?.classList.remove("is-changing");
   stateHand?.classList.remove("is-changing");
   requestAnimationFrame(() => {
