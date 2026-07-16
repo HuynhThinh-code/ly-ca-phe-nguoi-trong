@@ -517,7 +517,7 @@ if (shockButton) {
   shockButton.addEventListener("click", () => {
     const shocked = !shockSim.classList.contains("shocked");
     shockSim.classList.toggle("shocked", shocked);
-    farmerShock.textContent = shocked ? "28.000đ/kg" : "32.000đ/kg";
+    farmerShock.textContent = shocked ? "28.000đ/kg" : "40.000đ/kg";
     firmShock.textContent = shocked ? "45.000đ/kg" : "45.000đ/kg";
     shockButton.textContent = shocked ? "Khôi phục mô phỏng" : "Kích hoạt cú sốc giá -30%";
   });
@@ -878,6 +878,18 @@ function drawBean(ctx, x, y, size, angle, colorA, colorB, crease = true) {
   ctx.restore();
 }
 
+function beanAlphaForPosition(x, y) {
+  const scene = document.body.dataset.scene || "1";
+  const overMainCopy = x > width * 0.34 && x < width * 0.92 && y > height * 0.08 && y < height * 0.9;
+  const overHeroCopy = scene === "1" && x < width * 0.62 && y > height * 0.12 && y < height * 0.72;
+  const textHeavyScene = ["3", "4", "5", "7", "8", "9", "10", "11"].includes(scene);
+
+  if (overHeroCopy) return 0.16;
+  if (textHeavyScene && overMainCopy) return 0.18;
+  if (overMainCopy) return 0.34;
+  return 0.76;
+}
+
 function drawBackground(time) {
   beanCtx.clearRect(0, 0, width, height);
   const scroll = currentScrollRatio();
@@ -903,7 +915,7 @@ function drawBackground(time) {
     ["#63b36f", "#1f4c35"],
   ][phase % 5];
 
-  beanCtx.globalAlpha = 0.94;
+  beanCtx.globalAlpha = beanAlphaForPosition(pathX, pathY);
   drawBean(beanCtx, pathX, pathY, 36 + Math.sin(time * 0.002) * 4, scroll * Math.PI * 8, colors[0], colors[1]);
   beanCtx.globalAlpha = 1;
 

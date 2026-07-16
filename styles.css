@@ -1616,13 +1616,7 @@ p {
 }
 
 .chain article::before {
-  content: "";
-  position: absolute;
-  left: 22px;
-  right: 22px;
-  top: 62px;
-  height: 3px;
-  background: linear-gradient(90deg, var(--earth), var(--copper), var(--leaf));
+  display: none;
 }
 
 .chain article {
