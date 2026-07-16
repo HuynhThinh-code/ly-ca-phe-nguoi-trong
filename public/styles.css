@@ -991,6 +991,20 @@ p {
   cursor: pointer;
 }
 
+.secondary-btn {
+  color: var(--cream);
+  border: 1px solid rgba(255, 242, 214, 0.18);
+  background: rgba(255, 242, 214, 0.08);
+  box-shadow: none;
+}
+
+.secondary-btn:hover,
+.secondary-btn:focus-visible {
+  color: #160d09;
+  background: var(--gold);
+  outline: none;
+}
+
 .primary-btn svg {
   width: 20px;
   height: 20px;

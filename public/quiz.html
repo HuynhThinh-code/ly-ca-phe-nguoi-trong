@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fair Bean Quiz · Player</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='32' cy='32' rx='18' ry='26' fill='%23a45a2a' transform='rotate(24 32 32)'/%3E%3Cpath d='M31 10c8 11-6 19 2 44' fill='none' stroke='%23ffe0a3' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="quiz.css?v=live-quiz-20260716-1" />
+  </head>
+  <body>
+    <div class="ambient" aria-hidden="true"></div>
+    <main class="quiz-app player-app">
+      <section class="join-screen" id="joinScreen">
+        <a class="back-link" href="index.html">Về trang thuyết trình</a>
+        <div class="join-card">
+          <div class="mini-hero" aria-hidden="true"></div>
+          <small>Fair Bean Live</small>
+          <h1>Vào đội chơi</h1>
+          <p>Nhập tên nhóm, chờ admin bắt đầu, rồi chọn A/B/C/D trên màn hình này.</p>
+          <form id="joinForm">
+            <label for="teamName">Tên nhóm</label>
+            <input id="teamName" name="teamName" maxlength="30" placeholder="Ví dụ: Nhóm 1" autocomplete="off" required />
+            <button class="start-btn" type="submit">Vào sảnh chờ</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="game-screen" id="gameScreen" hidden>
+        <header class="dashboard player-dashboard" aria-live="polite">
+          <a class="dash-home" href="index.html" aria-label="Về trang thuyết trình">←</a>
+          <div class="dash-player">
+            <span class="mini-face" aria-hidden="true"></span>
+            <div>
+              <small>Đội chơi</small>
+              <strong id="playerName">Anh Khánh</strong>
+            </div>
+          </div>
+          <div class="dash-card score-card">
+            <small>Điểm</small>
+            <strong id="scoreValue">0</strong>
+          </div>
+          <div class="dash-card">
+            <small>Combo</small>
+            <strong id="comboValue">0x</strong>
+          </div>
+          <div class="dash-card">
+            <small>Coin</small>
+            <strong id="coinValue">0</strong>
+          </div>
+        </header>
+
+        <div class="progress-track" aria-hidden="true"><span id="quizProgress"></span></div>
+
+        <section class="question-arena">
+          <div class="question-top">
+            <span id="questionCount">Sảnh chờ</span>
+            <span id="roundTag">Đợi admin</span>
+          </div>
+          <h2 id="questionText">Bạn đã vào sảnh. Chờ admin bấm “Bắt đầu trò chơi”.</h2>
+          <div class="answers" id="answers"></div>
+          <div class="result-strip" id="resultStrip" hidden>
+            <strong id="resultTitle"></strong>
+            <span id="answerLine"></span>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="quiz.js?v=live-quiz-20260716-1"></script>
+  </body>
+</html>
